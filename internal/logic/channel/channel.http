@@ -1,0 +1,13 @@
+### /channel/create 创建应用的支付渠道 config是渠道需要的配置 json 格式注意转义
+POST {{payUrl}}/channel/create
+Content-Type: application/json
+
+{
+  "code": "WxPub",
+  "remark": "小程序支付",
+  "config": "{\"appId\":\"待填\",\"mchId\":\"待填\",\"serialNumber\":\"待填\",\"privateKeyContent\":\"待填\",\"apiV3Key\":\"待填\"}",
+  "status": 0,
+  "feeRate": 0.0,
+  "appId":  1
+}
+

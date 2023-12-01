@@ -1,0 +1,68 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type(
+    // demoOrder demoOrder information | demoOrder信息
+    DemoOrderInfo {
+        id *uint64 `json:"id"`
+        createAt *int64 `json:"createAt"`
+        updateAt *int64 `json:"updateAt"`
+        spuId *uint64 `json:"spuId"`
+        spuName *string `json:"spuName"`
+        price *int32 `json:"price"`
+        payStatus *bool `json:"payStatus"`
+        payOrderId *uint64 `json:"payOrderId" validate:"omitempty,"`
+        payTime *int64 `json:"payTime" validate:"omitempty,"`
+        payChannelCode *string `json:"payChannelCode" validate:"omitempty,"`
+        payRefundId *uint64 `json:"payRefundId" validate:"omitempty,"`
+        refundPrice *int32 `json:"refundPrice" validate:"omitempty,"`
+        refundTime *int64 `json:"refundTime" validate:"omitempty,"`
+    }
+
+    DemoOrderListResp {
+        BaseListInfo
+        data []*DemoOrderInfo `json:"data"`
+    }
+
+
+    createDemoOrderReq{
+        spuId uint64 `json:"spuId"`
+    }
+
+    PayOrderNotifyReq {
+        merchantOrderId string `json:"merchantOrderId"`
+        payOrderId uint64 `json:"payOrderId"`
+    }
+    PageAtPath{
+        page int32 `path:"page" validate:"required,number,gt=0"`
+        pageSize int32 `path:"size" validate:"required,number,lt=100000"`
+    }
+)
+
+
+@server(
+    group: demo
+    middleware: Authority
+    prefix: /pay
+)
+service Pay {
+    // createDemoOrder demoOrder information | 创建demoOrder
+    @handler createDemoOrder
+    post /demo-order/create (createDemoOrderReq) returns (BaseMsgResp)
+    // getDemoOrderPage demoOrder information | 获得demoOrder列表
+    @handler getDemoOrderPage
+    get /demo-order/page (PageAtPathInfo) returns (DemoOrderListResp)
+    // getDemoOrder demoOrder information | 获得demoOrder
+    @handler getDemoOrder
+    get /demo-order/get/:id (IDAtPathReq) returns (DemoOrderInfo)
+    // updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+    @handler updateDemoOrderPaid
+    post /demo-order/update-paid (PayOrderNotifyReq) returns (BaseMsgResp)
+}

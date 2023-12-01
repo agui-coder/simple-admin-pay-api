@@ -1,0 +1,35 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type (
+    notifyRep{
+        channelId uint64 `path:"channelId"`
+        body []byte `json:"body,optional"`
+        header map[string][]string `form:"header,optional"`
+    }
+)
+
+
+@server(
+    group: notify
+    middleware: Authority
+    prefix: /pay
+)
+
+service Pay {
+
+    // SubmitPayOrder order information | 支付回调
+    @handler notifyOrder
+    post /notify/order/:channelId (notifyRep) returns (string)
+
+    // Update order information | 退款回调
+    @handler notifyRefund
+    post /notify/refund (notifyRep) returns (string)
+}

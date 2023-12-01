@@ -1,0 +1,148 @@
+ import "../base.api"
+
+type (
+    // The response data of order information | Order信息
+    OrderInfo {
+        BaseIDInfo
+
+        // Status
+        Status  *uint32 `json:"status,optional"`
+
+        // AppId
+        AppId  *uint64 `json:"appId,optional"`
+
+        // ChannelId
+        ChannelId  *uint64 `json:"channelId,optional"`
+
+        // ChannelCode
+        ChannelCode  *string `json:"channelCode,optional"`
+
+        // MerchantOrderId
+        MerchantOrderId  *string `json:"merchantOrderId,optional"`
+
+        // Subject
+        Subject  *string `json:"subject,optional"`
+
+        // Body
+        Body  *string `json:"body,optional"`
+
+        // NotifyUrl
+        NotifyUrl  *string `json:"notifyUrl,optional"`
+
+        // Price
+        Price  *int32 `json:"price,optional"`
+
+        // ChannelFeeRate
+        ChannelFeeRate  *float64 `json:"channelFeeRate,optional"`
+
+        // ChannelFeePrice
+        ChannelFeePrice  *int32 `json:"channelFeePrice,optional"`
+
+        // UserIp
+        UserIp  *string `json:"userIp,optional"`
+
+        // ExpireTime
+        ExpireTime  *int64 `json:"expireTime,optional"`
+
+        // SuccessTime
+        SuccessTime  *int64 `json:"successTime,optional"`
+
+        // NotifyTime
+        NotifyTime  *int64 `json:"notifyTime,optional"`
+
+        // ExtensionId
+        ExtensionId  *uint64 `json:"extensionId,optional"`
+
+        // No
+        No  *string `json:"no,optional"`
+
+        // RefundPrice
+        RefundPrice  *int32 `json:"refundPrice,optional"`
+
+        // ChannelUserId
+        ChannelUserId  *string `json:"channelUserId,optional"`
+
+        // ChannelOrderNo
+        ChannelOrderNo  *string `json:"channelOrderNo,optional"`
+    }
+
+    OrderInfoResp{
+        BaseDataInfo
+        Data *OrderInfo `json:"data"`
+    }
+
+    OrderExtension{
+        no *string `json:"no"`
+        channelNotifyData *string `json:"channelNotifyData"`
+    }
+
+    OrderDetail{
+        OrderInfo
+        appName *string `json:"appName"`
+        extension *OrderExtension `json:"extension"`
+    }
+
+    OrderDetailResp{
+        BaseDataInfo
+        Data *OrderDetail `json:"data"`
+    }
+
+
+    OrderPageReq{
+        PageInfo
+        AppId *uint64 `json:"appId"`
+        ChannelCode *string `json:"channelCode"`
+        Status *uint32 `json:"status"`
+        MerchantOrderId *string `json:"merchantOrderId"`
+        ChannelOrderNo *string `json:"channelOrderNo"`
+        No *string `json:"no"`
+        CreateAt []int64 `json:"createAt"`
+    }
+
+    OrderPageResp{
+        BaseListInfo
+        Data []*OrderInfo `json:"data"`
+    }
+
+    OrderSubmitReq{
+        id uint64 `json:"id"`
+        channelCode string `json:"channelCode"`
+        channelExtras map[string]string `json:"channelExtras,optional"`
+        displayMode string `json:"displayMode,optional"`
+        returnUrl string `json:"returnUrl,optional"`
+    }
+    OrderSubmitResp{
+        status *uint32 `json:"status"`
+        displayMode *string `json:"displayMode"`
+        displayContent *string `json:"displayContent"`
+    }
+)
+
+@server(
+    group: order
+    middleware: Authority
+    prefix : /pay
+)
+
+service Pay {
+
+    // SubmitPayOrder order information | 更新Order
+    @handler submitPayOrder
+    post /order/submit (OrderSubmitReq) returns (OrderSubmitResp)
+
+    // Update order information | 更新Order
+    @handler updateOrder
+    post /order/update (OrderInfo) returns (BaseMsgResp)
+
+    // Get order information | 获取Order
+    @handler getOrder
+    get /order/get/:id (IDAtPathReq) returns (OrderInfoResp)
+
+    // Get Order Page | 获取Order分页列表
+    @handler getOrderPage
+    post /order/page(OrderPageReq) returns (OrderPageResp)
+
+    // Get Order Detail information | 获取Order 详情
+    @handler getOrderDetail
+    post /order/get-detail (IDReq) returns (OrderDetailResp)
+}

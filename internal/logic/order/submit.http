@@ -1,0 +1,8 @@
+### /pay/create 提交支付订单【alipay_pc】
+POST {{payUrl}}/order/submit
+Content-Type: application/json
+
+{
+  "id": 369,
+  "channelCode": "WxPub"
+}

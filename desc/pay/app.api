@@ -1,0 +1,135 @@
+import "../base.api"
+
+type (
+    // The response data of app information | App信息
+    AppInfo {
+        BaseIDInfo
+
+        // Status
+        Status  *uint32 `json:"status,optional" validate:"omitempty,"`
+
+        // Name
+        Name  *string `json:"name,optional" validate:"omitempty,"`
+
+        // Remark
+        Remark  *string `json:"remark,optional" validate:"omitempty,"`
+
+        // OrderNotifyUrl
+        OrderNotifyUrl  *string `json:"orderNotifyUrl,optional" validate:"omitempty,"`
+
+        // RefundNotifyUrl
+        RefundNotifyUrl  *string `json:"refundNotifyUrl,optional" validate:"omitempty,"`
+    }
+
+    AppInfoResp {
+        BaseDataInfo
+        Data AppInfo `json:"appInfo"`
+    }
+
+    AppBaseReq {
+        // Status
+        Status  uint32 `json:"status" validate:"inEnum=common_status"`
+
+        // Name
+        Name  string `json:"name"`
+
+        // Remark
+        Remark  *string `json:"remark,optional"`
+
+        // OrderNotifyUrl
+        OrderNotifyUrl  string `json:"orderNotifyUrl" validate:"url"`
+
+        // RefundNotifyUrl
+        RefundNotifyUrl  string `json:"refundNotifyUrl" validate:"url"`
+    }
+
+    AppBaseResp {
+        // Status
+        Status  *uint32 `json:"status,optional"`
+
+        // Name
+        Name  *string `json:"name,optional"`
+
+        // Remark
+        Remark  *string `json:"remark,optional"`
+
+        // OrderNotifyUrl
+        OrderNotifyUrl  *string `json:"orderNotifyUrl,optional"`
+
+        // RefundNotifyUrl
+        RefundNotifyUrl  *string `json:"refundNotifyUrl,optional"`
+    }
+
+    AppCreateReq {
+        AppBaseReq
+    }
+    AppUpdateReq{
+        AppBaseReq
+        Id uint64 `json:"id"`
+    }
+    AppPageItemResp{
+        AppBaseResp
+        Id *uint64 `json:"id"`
+        CreateAt *int64 `json:"createAt"`
+        ChannelCodes []*string `json:"channelCodes"`
+    }
+
+    // The response data of app list | App列表数据
+    AppListResp {
+        BaseListInfo
+
+        // App list data | App列表数据
+        Data []AppPageItemResp `json:"data"`
+    }
+
+    // Get app list request params | App列表请求参数
+    AppListReq {
+        PageInfo
+
+        // Name 应用名
+        Name  *string `json:"name,optional"`
+
+        // Status 开启状态
+        Status *uint8 `json:"status,optional"`
+        // CreateTime 创建时间
+        CreateAt []int64 `json:"createAt,optional"`
+    }
+
+    AppUpdateStatusReq {
+        Id uint64 `json:"id"`
+        // Status
+        Status  uint32 `json:"status"`
+    }
+)
+
+@server(
+    group: app
+    middleware: Authority
+    prefix: /pay
+)
+
+service Pay {
+    // Create app information | 创建App
+    @handler createApp
+    post /app/create (AppCreateReq) returns (BaseMsgResp)
+
+    // Update app information | 更新App
+    @handler updateApp
+    post /app/update (AppUpdateReq) returns (BaseMsgResp)
+
+    // Update app information | 更新App状态
+    @handler updateAppStatus
+    post /app/update-status (AppUpdateStatusReq) returns (BaseMsgResp)
+
+    // Delete app information | 删除App信息
+    @handler deleteApp
+    post /app/delete (IDReq) returns (BaseMsgResp)
+
+    // Get app page | 获取App列表分页
+    @handler getAppPage
+    post /app/page(AppListReq) returns (AppListResp)
+
+    // Get app by ID | 通过ID获取App
+    @handler getAppById
+    post /app (IDReq) returns (AppInfoResp)
+}
