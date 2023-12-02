@@ -2,6 +2,7 @@ package demo
 
 import (
 	"context"
+	"github.com/agui-coder/simple-admin-pay-api/common/consts"
 	"strconv"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/pay"
@@ -34,5 +35,5 @@ func (l *UpdateDemoOrderPaidLogic) UpdateDemoOrderPaid(req *types.PayOrderNotify
 	if err != nil {
 		return nil, err
 	}
-	return &types.BaseMsgResp{Msg: data.Msg}, nil
+	return &types.BaseMsgResp{Code: int(consts.SUCCESS), Msg: data.Msg}, nil
 }

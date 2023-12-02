@@ -1,6 +1,6 @@
 package consts
 
 const (
-	Enable  uint8 = 0
-	Disable uint8 = 1
+	Enable  uint8 = 1
+	Disable uint8 = 2
 )

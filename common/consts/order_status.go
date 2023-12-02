@@ -1,7 +1,7 @@
 package consts
 
 const (
-	WAITING uint8 = iota * 10
+	WAITING uint8 = (iota + 1) * 10
 	SUCCESS
 	REFUND
 	CLOSED
