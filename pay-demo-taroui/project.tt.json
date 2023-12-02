@@ -1,0 +1,9 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "pay-demo-traoui",
+  "appid": "testAppId",
+  "setting": {
+    "es6": false,
+    "minified": false
+  }
+}

@@ -1,0 +1,41 @@
+
+.container {
+  padding: 20px;
+}
+
+.page-section {
+  margin-bottom: 20px;
+}
+
+.input {
+  margin-bottom: 50px;
+}
+
+.picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.selected-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  color: red;
+}
+
+.confirm-button {
+  margin-bottom: 20px;
+}
+
+.model {
+  // 在这里添加你的样式
+  // 例如：
+  background-color: #fff;
+  color: #333;
+}
