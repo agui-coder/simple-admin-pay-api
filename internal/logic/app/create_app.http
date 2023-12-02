@@ -1,11 +1,11 @@
 ### /pay/app/create 创建应用
-POST {{payUrl}}/app/create
+POST 127.0.0.1:9107/pay/app/create
 Content-Type: application/json
 
 {
   "status": 0,
-  "name": "trade",
+  "name": "demo",
   "remark": "主要填写支付状态回调地址",
-  "orderNotifyUrl": "127.0.0.1/trade/order/update-order-status",
-  "refundNotifyUrl": "127.0.0.1/trade/refund/update-refund-status"
+  "orderNotifyUrl": "127.0.0.1/pay/demo/update-paid",
+  "refundNotifyUrl": "127.0.0.1/pay/demo/update-paid"
 }

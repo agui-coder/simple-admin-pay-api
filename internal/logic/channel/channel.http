@@ -1,5 +1,5 @@
-### /channel/create 创建应用的支付渠道 config是渠道需要的配置 json 格式注意转义
-POST {{payUrl}}/channel/create
+### /pay/channel/create 创建应用的支付渠道 config是渠道需要的配置 json 格式注意转义
+POST 127.0.0.1:9107/pay/channel/create
 Content-Type: application/json
 
 {
