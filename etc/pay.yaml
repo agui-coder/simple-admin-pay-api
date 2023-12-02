@@ -52,3 +52,10 @@ CasbinConf:
     e = some(where (p.eft == allow))
     [matchers]
     m = r.sub == p.sub && keyMatch2(r.obj,p.obj) && r.act == p.act
+
+## TODO 请修改为自己的支付回调地址
+PayProperties:
+  OrderNotifyUrl: "https://127.0.0.1/pay/notify/order"
+  RefundNotifyUrl: "https://127.0.0.1/pay/notify/refund"
+  OrderNoPrefix: "P"
+  RefundNoPrefix: "R"
