@@ -14,34 +14,28 @@ export default function () {
   interface Product {
     id: number;
     name: string;
-    price: number;
   }
   
   const productList: Product[] = [
     {
       id: 1,
-      name: '华为手机',
-      price: 1
+      name: '华为手机,价格：0.01元'
     },
     {
       id: 2,
-      name: '小米电视',
-      price: 10
+      name: '小米电视,价格：0.1元'
     },
     {
       id: 3,
-      name: '苹果手表',
-      price: 100
+      name: '苹果手表,价格：1元'
     },
     {
       id: 4,
-      name: '华硕笔记本',
-      price: 1000
+      name: '华硕笔记本,价格：10元'
     },
     {
       id: 5,
-      name: '蔚来汽车',
-      price: 200000
+      name: '蔚来汽车,价格：2000元'
     }
   ];
   
