@@ -2,7 +2,6 @@ package weixin
 
 import (
 	"context"
-
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
 	"github.com/go-pay/gopay/wechat/v3"
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
@@ -29,11 +28,9 @@ func (w *NativePayClient) UnifiedOrder(ctx context.Context, req model.OrderUnifi
 		return nil, err
 	}
 	if wxRsp.Code == wechat.Success {
-		orderResp, err := model.WaitingOf(pointy.GetPointer(model.QrCode), req.OutTradeNo, wxRsp.Response.CodeUrl)
-		if err != nil {
-			return nil, err
-		}
-		return orderResp, nil
+		return model.WaitingOf(pointy.GetPointer(model.QrCode),
+			pointy.GetPointer(wxRsp.Response.CodeUrl), req.OutTradeNo,
+			wxRsp.Response.CodeUrl), nil
 	}
 	logx.Errorf("wxRsp:%s", wxRsp.Error)
 	return nil, errorx.NewInvalidArgumentError(wxRsp.Error)

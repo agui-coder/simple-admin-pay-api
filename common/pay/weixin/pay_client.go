@@ -7,10 +7,9 @@ import (
 	"crypto/rsa"
 	"crypto/sha256"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"math/big"
-	"net/textproto"
+	"net/http"
 	"strconv"
 	"time"
 
@@ -133,17 +132,17 @@ func (w *Client) buildPayUnifiedOrderBm(req model.OrderUnifiedReq) gopay.BodyMap
 	return bm
 }
 
-func (w *Client) ParseOrderNotify(header map[string][]string, body []byte) (*model.OrderResp, error) {
-	notifyReq, err := V3ParseNotify(header, body)
+func (w *Client) ParseOrderNotify(r *http.Request) (*model.OrderResp, error) {
+	req, err := wechat.V3ParseNotify(r)
 	if err != nil {
 		return nil, err
 	}
 	cert := w.client.WxPublicKey()
-	err = notifyReq.VerifySignByPK(cert)
+	err = req.VerifySignByPK(cert)
 	if err != nil {
 		return nil, err
 	}
-	result, err := notifyReq.DecryptCipherText(string(w.client.ApiV3Key))
+	result, err := req.DecryptCipherText(string(w.client.ApiV3Key))
 	if err != nil {
 		return nil, err
 	}
@@ -159,29 +158,12 @@ func (w *Client) ParseOrderNotify(header map[string][]string, body []byte) (*mod
 	if err != nil {
 		return nil, err
 	}
-	return model.Of(status, result.TransactionId, openid, successTime, result.OutTradeNo, body), nil
+	return model.Of(status, result.TransactionId, openid, successTime, result.OutTradeNo, req), nil
 }
 
 func (w *Client) UnifiedRefund(ctx context.Context, req model.RefundUnifiedReq) (*model.RefundResp, error) {
 	//TODO implement me
 	panic("implement me")
-}
-
-// V3ParseNotify 解析微信回调请求的参数到 V3NotifyReq 结构体
-func V3ParseNotify(header map[string][]string, body []byte) (notifyReq *wechat.V3NotifyReq, err error) {
-	mimeHeader := textproto.MIMEHeader(header)
-	si := &wechat.SignInfo{
-		HeaderTimestamp: mimeHeader.Get(wechat.HeaderTimestamp),
-		HeaderNonce:     mimeHeader.Get(wechat.HeaderNonce),
-		HeaderSignature: mimeHeader.Get(wechat.HeaderSignature),
-		HeaderSerial:    mimeHeader.Get(wechat.HeaderSerial),
-		SignBody:        string(body),
-	}
-	notifyReq = &wechat.V3NotifyReq{SignInfo: si}
-	if err = json.Unmarshal(body, notifyReq); err != nil {
-		return nil, fmt.Errorf("json.Unmarshal(%s, %+v)：%w", body, notifyReq, err)
-	}
-	return notifyReq, nil
 }
 
 func parseStatus(tradeState string) (uint8, error) {

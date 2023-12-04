@@ -3,6 +3,7 @@ package notify
 import (
 	"context"
 	"encoding/json"
+	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
@@ -14,8 +15,9 @@ import (
 
 type NotifyOrderLogic struct {
 	logx.Logger
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
+	ctx       context.Context
+	svcCtx    *svc.ServiceContext
+	OrderResp *model.OrderResp
 }
 
 func NewNotifyOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *NotifyOrderLogic {
@@ -26,26 +28,18 @@ func NewNotifyOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Notif
 }
 
 func (l *NotifyOrderLogic) NotifyOrder(req *types.NotifyRep) (resp string, err error) {
-	client, err := l.svcCtx.GetPayClient(l.ctx, req.ChannelId)
-	if err != nil {
-		return "error", nil
-	}
-	unifiedOrderResp, err := client.ParseOrderNotify(req.Header, req.Body)
-	if err != nil {
-		return "error", nil
-	}
-	channelNotifyData, err := json.Marshal(unifiedOrderResp)
+	channelNotifyData, err := json.Marshal(l.OrderResp)
 	if err != nil {
 		return "error", nil
 	}
 	_, err = l.svcCtx.PayRpc.NotifyOrder(l.ctx, &payclient.NotifyOrderReq{
 		ChannelId:         req.ChannelId,
-		Status:            uint32(unifiedOrderResp.Status),
-		OutTradeNo:        unifiedOrderResp.OutTradeNo,
+		Status:            uint32(l.OrderResp.Status),
+		OutTradeNo:        l.OrderResp.OutTradeNo,
 		ChannelNotifyData: string(channelNotifyData),
-		SuccessTime:       unifiedOrderResp.SuccessTime.Unix(),
-		ChannelOrderNo:    unifiedOrderResp.ChannelOrderNo,
-		ChannelUserId:     unifiedOrderResp.ChannelUserId,
+		SuccessTime:       l.OrderResp.SuccessTime.Unix(),
+		ChannelOrderNo:    l.OrderResp.ChannelOrderNo,
+		ChannelUserId:     l.OrderResp.ChannelUserId,
 	})
 	if err != nil {
 		return "error", err

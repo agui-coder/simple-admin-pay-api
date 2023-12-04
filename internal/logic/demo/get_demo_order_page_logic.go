@@ -24,7 +24,7 @@ func NewGetDemoOrderPageLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 		svcCtx: svcCtx}
 }
 
-func (l *GetDemoOrderPageLogic) GetDemoOrderPage(req *types.PageAtPathInfo) (resp *types.DemoOrderListResp, err error) {
+func (l *GetDemoOrderPageLogic) GetDemoOrderPage(req *types.PageInfo) (resp *types.DemoOrderListResp, err error) {
 	data, err := l.svcCtx.PayRpc.GetListDemoOrder(l.ctx, &payclient.DemoOrderPageReq{Page: req.Page, PageSize: req.PageSize})
 	if err != nil {
 		return nil, err

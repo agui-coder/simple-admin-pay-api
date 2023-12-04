@@ -1,8 +1,6 @@
 package notify
 
 import (
-	"bytes"
-	"io"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -30,19 +28,21 @@ import (
 func NotifyOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.NotifyRep
-		bs, err := io.ReadAll(io.LimitReader(r.Body, int64(5<<20))) // default 5MB change the size you want;
-		defer r.Body.Close()
+		err := httpx.ParsePath(r, &req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		}
-		r.Body = io.NopCloser(bytes.NewBuffer(bs))
-		if err = httpx.Parse(r, &req, true); err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-			return
+		ctx := r.Context()
+		client, err := svcCtx.GetPayClient(ctx, req.ChannelId)
+		if err != nil {
+			httpx.ErrorCtx(ctx, w, err)
 		}
-		req.Body = bs
-		l := notify.NewNotifyOrderLogic(r.Context(), svcCtx)
-		req.Header = r.Header
+		orderResp, err := client.ParseOrderNotify(r)
+		if err != nil {
+			httpx.ErrorCtx(ctx, w, err)
+		}
+		l := notify.NewNotifyOrderLogic(ctx, svcCtx)
+		l.OrderResp = orderResp
 		resp, err := l.NotifyOrder(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)

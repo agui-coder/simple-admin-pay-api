@@ -2,6 +2,7 @@ package weixin
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
@@ -41,11 +42,13 @@ func (w *PubPayClient) UnifiedOrder(ctx context.Context, req model.OrderUnifiedR
 		if err != nil {
 			return nil, err
 		}
-		orderResp, err := model.WaitingOf(pointy.GetPointer(model.App), req.OutTradeNo, result)
+		jsonData, err := json.Marshal(result)
 		if err != nil {
 			return nil, err
 		}
-		return orderResp, nil
+		return model.WaitingOf(pointy.GetPointer(model.App),
+			pointy.GetPointer(string(jsonData)),
+			req.OutTradeNo, result), nil
 	}
 	logx.Errorf("wxRsp:%s", wxRsp.Error)
 	return nil, errors.New(wxRsp.Error)

@@ -58,7 +58,7 @@ service Pay {
     post /demo-order/create (createDemoOrderReq) returns (BaseMsgResp)
     // getDemoOrderPage demoOrder information | 获得demoOrder列表
     @handler getDemoOrderPage
-    get /demo-order/page (PageAtPathInfo) returns (DemoOrderListResp)
+    post /demo-order/page (PageInfo) returns (DemoOrderListResp)
     // getDemoOrder demoOrder information | 获得demoOrder
     @handler getDemoOrder
     get /demo-order/get/:id (IDAtPathReq) returns (DemoOrderInfo)

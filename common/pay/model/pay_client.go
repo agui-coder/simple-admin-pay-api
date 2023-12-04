@@ -2,9 +2,8 @@ package model
 
 import (
 	"context"
-	"encoding/json"
-	"github.com/suyuan32/simple-admin-common/utils/pointy"
 	"github.com/zeromicro/go-zero/core/logx"
+	"net/http"
 	"time"
 )
 
@@ -75,7 +74,7 @@ type (
 		// UnifiedRefund 退款
 		UnifiedRefund(context.Context, RefundUnifiedReq) (*RefundResp, error)
 		// ParseOrderNotify 解析支付回调
-		ParseOrderNotify(map[string][]string, []byte) (*OrderResp, error)
+		ParseOrderNotify(r *http.Request) (*OrderResp, error)
 	}
 
 	OrderUnifiedReq struct {
@@ -124,19 +123,15 @@ type (
 )
 
 // WaitingOf 创建等待支付订单
-func WaitingOf(displayMode *string, outTradeNo string, rawData any) (*OrderResp, error) {
+func WaitingOf(displayMode, displayContent *string, outTradeNo string, rawData any) *OrderResp {
 	logx.Debugf("wxRsp: %#v", rawData)
-	jsonData, err := json.Marshal(rawData)
-	if err != nil {
-		return nil, err
-	}
 	return &OrderResp{
 		Status:         WAITING,
 		DisplayMode:    displayMode,
-		DisplayContent: pointy.GetPointer(string(jsonData)),
+		DisplayContent: displayContent,
 		OutTradeNo:     outTradeNo,
 		RawData:        rawData,
-	}, nil
+	}
 }
 
 // SuccessOf 创建支付成功订单
@@ -160,5 +155,15 @@ func Of(status uint8, channelOrderNo string, channelUserId *string, successTime 
 		SuccessTime:    successTime,
 		OutTradeNo:     outTradeNo,
 		RawData:        rawData,
+	}
+}
+
+func CloseOf(channelErrorCode, channelErrorMsg, outTradeNo string, rawData any) *OrderResp {
+	return &OrderResp{
+		Status:           CLOSED,
+		ChannelErrorCode: &channelErrorCode,
+		ChannelErrorMsg:  &channelErrorMsg,
+		OutTradeNo:       outTradeNo,
+		RawData:          rawData,
 	}
 }

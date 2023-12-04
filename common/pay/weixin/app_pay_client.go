@@ -2,6 +2,7 @@ package weixin
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
 	"github.com/go-pay/gopay/wechat/v3"
@@ -33,11 +34,13 @@ func (w *AppPayClient) UnifiedOrder(ctx context.Context, req model.OrderUnifiedR
 		if err != nil {
 			return nil, err
 		}
-		orderResp, err := model.WaitingOf(pointy.GetPointer(model.App), req.OutTradeNo, result)
+		jsonData, err := json.Marshal(result)
 		if err != nil {
 			return nil, err
 		}
-		return orderResp, nil
+		return model.WaitingOf(pointy.GetPointer(model.App),
+			pointy.GetPointer(string(jsonData)),
+			req.OutTradeNo, result), nil
 	}
 	logx.Errorf("wxRsp:%s", wxRsp.Error)
 	return nil, errorx.NewInvalidArgumentError(wxRsp.Error)

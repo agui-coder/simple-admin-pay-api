@@ -136,7 +136,7 @@ service Pay {
 
     // Get order information | 获取Order
     @handler getOrder
-    get /order/get/:id (IDAtPathReq) returns (OrderInfoResp)
+    post /order/get (IDReq) returns (OrderInfoResp)
 
     // Get Order Page | 获取Order分页列表
     @handler getOrderPage

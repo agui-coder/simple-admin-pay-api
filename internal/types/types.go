@@ -144,15 +144,15 @@ type ProductPropertyValueDetailResp struct {
 type AppInfo struct {
 	BaseIDInfo
 	// Status
-	Status *uint32 `json:"status,optional"`
+	Status *uint32 `json:"status,optional" validate:"omitempty,"`
 	// Name
-	Name *string `json:"name,optional"`
+	Name *string `json:"name,optional" validate:"omitempty,"`
 	// Remark
-	Remark *string `json:"remark,optional"`
+	Remark *string `json:"remark,optional" validate:"omitempty,"`
 	// OrderNotifyUrl
-	OrderNotifyUrl *string `json:"orderNotifyUrl,optional"`
+	OrderNotifyUrl *string `json:"orderNotifyUrl,optional" validate:"omitempty,"`
 	// RefundNotifyUrl
-	RefundNotifyUrl *string `json:"refundNotifyUrl,optional"`
+	RefundNotifyUrl *string `json:"refundNotifyUrl,optional" validate:"omitempty,"`
 }
 
 // swagger:model AppInfoResp
@@ -411,12 +411,12 @@ type DemoOrderInfo struct {
 	SpuName        *string `json:"spuName"`
 	Price          *int32  `json:"price"`
 	PayStatus      *bool   `json:"payStatus"`
-	PayOrderId     *uint64 `json:"payOrderId"`
-	PayTime        *int64  `json:"payTime"`
-	PayChannelCode *string `json:"payChannelCode"`
-	PayRefundId    *uint64 `json:"payRefundId"`
-	RefundPrice    *int32  `json:"refundPrice"`
-	RefundTime     *int64  `json:"refundTime"`
+	PayOrderId     *uint64 `json:"payOrderId" validate:"omitempty,"`
+	PayTime        *int64  `json:"payTime" validate:"omitempty,"`
+	PayChannelCode *string `json:"payChannelCode" validate:"omitempty,"`
+	PayRefundId    *uint64 `json:"payRefundId" validate:"omitempty,"`
+	RefundPrice    *int32  `json:"refundPrice" validate:"omitempty,"`
+	RefundTime     *int64  `json:"refundTime" validate:"omitempty,"`
 }
 
 // swagger:model DemoOrderListResp

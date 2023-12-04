@@ -80,8 +80,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: order.UpdateOrderHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodGet,
-					Path:    "/order/get/:id",
+					Method:  http.MethodPost,
+					Path:    "/order/get",
 					Handler: order.GetOrderHandler(serverCtx),
 				},
 				{
@@ -162,7 +162,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Handler: demo.CreateDemoOrderHandler(serverCtx),
 				},
 				{
-					Method:  http.MethodGet,
+					Method:  http.MethodPost,
 					Path:    "/demo-order/page",
 					Handler: demo.GetDemoOrderPageHandler(serverCtx),
 				},

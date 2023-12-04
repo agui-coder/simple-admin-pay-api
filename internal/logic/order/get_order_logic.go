@@ -26,7 +26,7 @@ func NewGetOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetOrder
 		svcCtx: svcCtx}
 }
 
-func (l *GetOrderLogic) GetOrder(req *types.IDAtPathReq) (resp *types.OrderInfoResp, err error) {
+func (l *GetOrderLogic) GetOrder(req *types.IDReq) (resp *types.OrderInfoResp, err error) {
 	order, err := l.svcCtx.PayRpc.GetOrder(l.ctx, &payclient.IDReq{Id: req.Id})
 	if err != nil {
 		return nil, err

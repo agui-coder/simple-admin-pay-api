@@ -2,6 +2,7 @@ package mock
 
 import (
 	"context"
+	"net/http"
 	"time"
 
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
@@ -25,7 +26,7 @@ type Client struct {
 	Config    *ClientConfig
 }
 
-func (c *Client) ParseOrderNotify(map[string][]string, []byte) (*model.OrderResp, error) {
+func (c *Client) ParseOrderNotify(r *http.Request) (*model.OrderResp, error) {
 	return nil, errorx.NewInvalidArgumentError("mock no parse order notify")
 }
 

@@ -75,9 +75,21 @@ func getNewClient(channelId uint64, channelCode string, config model.ClientConfi
 				client = weixin.NewWxLitePayClient(channelId, c)
 			}
 		}
-	case model.Ali:
+	case model.AlipayPc, model.AlipayWap, model.AlipayApp, model.AlipayBar, model.AlipayQr:
 		if c, ok := config.(ali.ClientConfig); ok {
-			client = ali.NewAlipayPcPayClient(channelId, c)
+			switch channelCode {
+			case model.AlipayPc:
+				client = ali.NewAliPcPayClient(channelId, c)
+			case model.AlipayWap:
+				client = ali.NewAliWapPayClient(channelId, c)
+			case model.AlipayApp:
+				return nil, errorx.NewInvalidArgumentError("not support alipay app")
+			case model.AlipayBar:
+				client = ali.NewAliBarPayClient(channelId, c)
+			case model.AlipayQr:
+				client = ali.NewAliQrPayClient(channelId, c)
+			}
+
 		}
 	case model.Mock:
 		if c, ok := config.(mock.ClientConfig); ok {
@@ -103,7 +115,7 @@ func GetClientConfig(channelCode string, config string) (clientConfig model.Clie
 			return nil, err
 		}
 		clientConfig = wxClientConfig
-	case model.AlipayBar, model.AlipayApp, model.AlipayPc, model.AlipayWap:
+	case model.AlipayBar, model.AlipayApp, model.AlipayPc, model.AlipayWap, model.AlipayQr:
 		var aliClientConfig ali.ClientConfig
 		err = json.Unmarshal([]byte(config), &aliClientConfig)
 		if err != nil {

@@ -3,6 +3,9 @@ package pay
 import (
 	"context"
 	"fmt"
+	"github.com/agui-coder/simple-admin-pay-api/common/pay/ali"
+	"github.com/go-pay/gopay/alipay"
+	"github.com/go-pay/gopay/alipay/cert"
 	"os"
 	"strconv"
 	"testing"
@@ -15,20 +18,15 @@ import (
 
 var (
 	factory      = NewFactory()
-	wxConfig     = buildWxClientConfig()
 	channelIdMap = make(map[string]uint64)
 )
 
-func TestMain(m *testing.M) {
+func TestCreateWxPayClient(t *testing.T) {
 	channelIdMap[model.WxPub] = 1
-	_, err := factory.CreateOrUpdatePayClient(1, model.WxPub, wxConfig)
+	_, err := factory.CreateOrUpdatePayClient(1, model.WxPub, buildWxClientConfig())
 	if err != nil {
 		logx.Error(err.Error())
 	}
-	os.Exit(m.Run())
-}
-
-func TestCreateWxPayClient(t *testing.T) {
 	client, err := factory.GetClient(channelIdMap[model.WxPub])
 	if err != nil {
 		logx.Error(err.Error())
@@ -38,6 +36,23 @@ func TestCreateWxPayClient(t *testing.T) {
 		logx.Error(err.Error())
 	}
 	fmt.Print(&order)
+}
+
+func TestCreateAliPayClient(t *testing.T) {
+	channelIdMap[model.AlipayPc] = 2
+	_, err := factory.CreateOrUpdatePayClient(2, model.AlipayPc, buildAliClientConfig())
+	if err != nil {
+		logx.Error(err.Error())
+	}
+	client, err := factory.GetClient(channelIdMap[model.AlipayPc])
+	if err != nil {
+		logx.Error(err.Error())
+	}
+	resp, err := client.UnifiedOrder(context.Background(), buildPayOrderUnifiedReq())
+	if err != nil {
+		logx.Error(err.Error())
+	}
+	fmt.Print(resp)
 }
 
 func buildPayOrderUnifiedReq() model.OrderUnifiedReq {
@@ -57,7 +72,7 @@ func buildPayOrderUnifiedReq() model.OrderUnifiedReq {
 }
 
 func buildWxClientConfig() weixin.ClientConfig {
-	privateKeyFile, err := os.ReadFile("D:\\Users\\DESK-0010\\Downloads\\WXCertUtil\\cert\\cert\\apiclient_key.pem")
+	privateKeyFile, err := os.ReadFile("apiclient_key.pem")
 	if err != nil {
 		logx.Error(err.Error())
 	}
@@ -68,5 +83,16 @@ func buildWxClientConfig() weixin.ClientConfig {
 		PrivateKeyContent: string(privateKeyFile),
 		SerialNumber:      "",
 		ApiV3Key:          "",
+	}
+}
+
+func buildAliClientConfig() ali.ClientConfig {
+	return ali.ClientConfig{
+		AppId:                   "代填",
+		SignType:                alipay.RSA2,
+		PrivateKey:              cert.PrivateKey,
+		AppPublicContent:        string(cert.AppPublicContent),
+		AlipayPublicContentRSA2: string(cert.AlipayPublicContentRSA2),
+		AlipayRootContent:       string(cert.AlipayRootContent),
 	}
 }
