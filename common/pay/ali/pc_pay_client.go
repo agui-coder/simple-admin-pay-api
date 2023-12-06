@@ -3,6 +3,7 @@ package ali
 import (
 	"context"
 	"github.com/suyuan32/simple-admin-common/utils/pointy"
+	"github.com/zeromicro/go-zero/core/logx"
 
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
 	"github.com/go-pay/gopay"
@@ -13,9 +14,17 @@ type PcPayClient struct {
 	Client
 }
 
-func NewAliPcPayClient(channelId uint64, config ClientConfig) *PcPayClient {
+// 编译时接口实现的检查
+var _ model.Client = (*PcPayClient)(nil)
+
+func NewAliPcPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	aliConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type ali.ClientConfig")
+		return nil
+	}
 	return &PcPayClient{
-		Client{Config: &config, ChannelId: channelId},
+		Client{Config: &aliConfig, ChannelId: channelId},
 	}
 }
 

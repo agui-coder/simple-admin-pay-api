@@ -7,6 +7,7 @@ import (
 	"crypto/rsa"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"math/big"
 	"net/http"
@@ -290,4 +291,13 @@ func sign(message string, privateKeyContent string) (string, error) {
 	// 对签名结果进行Base64编码
 	signatureBase64 := base64.StdEncoding.EncodeToString(signature)
 	return signatureBase64, nil
+}
+
+func ParseWxClientConfig(config string) (model.ClientConfig, error) {
+	var wxClientConfig ClientConfig
+	err := json.Unmarshal([]byte(config), &wxClientConfig)
+	if err != nil {
+		return nil, err
+	}
+	return wxClientConfig, nil
 }

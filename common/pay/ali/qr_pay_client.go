@@ -14,9 +14,17 @@ type QrPayClient struct {
 	Client
 }
 
-func NewAliQrPayClient(channelId uint64, config ClientConfig) *QrPayClient {
+// 编译时接口实现的检查
+var _ model.Client = (*QrPayClient)(nil)
+
+func NewAliQrPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	aliConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type ali.ClientConfig")
+		return nil
+	}
 	return &QrPayClient{
-		Client{Config: &config, ChannelId: channelId},
+		Client{Config: &aliConfig, ChannelId: channelId},
 	}
 }
 

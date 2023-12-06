@@ -42,11 +42,6 @@ func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *t
 	if err != nil {
 		return nil, err
 	}
-	client, err := l.svcCtx.GetPayClient(l.ctx, *channel.Id)
-	if err != nil {
-		logx.Errorf("[validatePayChannelCanSubmit][渠道编号(%d) 找不到对应的支付客户端]", channel.Id)
-		return nil, err
-	}
 	no, err := payno.Generate(l.svcCtx.Redis, payno.OrderNoPrefix)
 	if err != nil {
 		return nil, err
@@ -65,6 +60,11 @@ func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *t
 		UserIP:        userIP,
 	})
 	if err != nil {
+		return nil, err
+	}
+	client, err := l.svcCtx.GetPayClient(l.ctx, *channel.Id)
+	if err != nil {
+		logx.Errorf("[validatePayChannelCanSubmit][渠道编号(%d) 找不到对应的支付客户端]", channel.Id)
 		return nil, err
 	}
 	unifiedOrderResp, err := client.UnifiedOrder(l.ctx, payClient.OrderUnifiedReq{
@@ -104,7 +104,6 @@ func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *t
 				unifiedOrderResp.ChannelErrorCode, unifiedOrderResp.ChannelErrorMsg))
 		}
 	}
-
 	order, err = l.svcCtx.PayRpc.GetOrder(l.ctx, &payclient.IDReq{Id: req.Id})
 	if err != nil {
 		return nil, err

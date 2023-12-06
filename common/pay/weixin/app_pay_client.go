@@ -16,9 +16,17 @@ type AppPayClient struct {
 	Client
 }
 
-func NewWxAppPayClient(channelId uint64, config ClientConfig) *AppPayClient {
+// 编译时接口实现的检查
+var _ model.Client = (*AppPayClient)(nil)
+
+func NewWxAppPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	wxConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type weixin.ClientConfig")
+		return nil
+	}
 	return &AppPayClient{
-		Client{Config: &config, ChannelId: channelId},
+		Client{Config: &wxConfig, ChannelId: channelId},
 	}
 }
 

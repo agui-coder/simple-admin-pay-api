@@ -2,6 +2,7 @@ package ali
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
@@ -144,4 +145,13 @@ func parseStatus(tradeStatus string) *uint8 {
 	default:
 		return nil
 	}
+}
+
+func ParseAliClientConfig(config string) (model.ClientConfig, error) {
+	var aliClientConfig ClientConfig
+	err := json.Unmarshal([]byte(config), &aliClientConfig)
+	if err != nil {
+		return nil, err
+	}
+	return aliClientConfig, nil
 }

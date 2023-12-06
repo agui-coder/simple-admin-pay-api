@@ -2,6 +2,7 @@ package mock
 
 import (
 	"context"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 	"time"
 
@@ -30,9 +31,17 @@ func (c *Client) ParseOrderNotify(r *http.Request) (*model.OrderResp, error) {
 	return nil, errorx.NewInvalidArgumentError("mock no parse order notify")
 }
 
-func NewMockPayClient(channelId uint64, config ClientConfig) *Client {
+// 编译时接口实现的检查
+var _ model.Client = (*Client)(nil)
+
+func NewMockPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	mockConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type mock.ClientConfig")
+		return nil
+	}
 	return &Client{
-		Config: &config, ChannelId: channelId,
+		Config: &mockConfig, ChannelId: channelId,
 	}
 }
 
@@ -59,4 +68,9 @@ func (c *Client) Refresh(config model.ClientConfig) error {
 
 func (c *Client) UnifiedRefund(ctx context.Context, req model.RefundUnifiedReq) (*model.RefundResp, error) {
 	return nil, nil
+}
+
+func ParseMockClientConfig(config string) (model.ClientConfig, error) {
+	var mockClientConfig ClientConfig
+	return mockClientConfig, nil
 }

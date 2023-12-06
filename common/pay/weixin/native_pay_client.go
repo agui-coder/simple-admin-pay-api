@@ -14,9 +14,17 @@ type NativePayClient struct {
 	Client
 }
 
-func NewWxNativePayClient(channelId uint64, config ClientConfig) *AppPayClient {
-	return &AppPayClient{
-		Client{Config: &config, ChannelId: channelId},
+// 编译时接口实现的检查
+var _ model.Client = (*NativePayClient)(nil)
+
+func NewWxNativePayClient(channelId uint64, config model.ClientConfig) model.Client {
+	wxConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type weixin.ClientConfig")
+		return nil
+	}
+	return &NativePayClient{
+		Client{Config: &wxConfig, ChannelId: channelId},
 	}
 }
 

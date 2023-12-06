@@ -16,9 +16,17 @@ type BarPayClient struct {
 	Client
 }
 
-func NewAliBarPayClient(channelId uint64, config ClientConfig) *BarPayClient {
+// 编译时接口实现的检查
+var _ model.Client = (*BarPayClient)(nil)
+
+func NewAliBarPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	aliConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type ali.ClientConfig")
+		return nil
+	}
 	return &BarPayClient{
-		Client{Config: &config, ChannelId: channelId},
+		Client{Config: &aliConfig, ChannelId: channelId},
 	}
 }
 

@@ -1,7 +1,6 @@
 package pay
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/agui-coder/simple-admin-pay-api/common/pay/ali"
@@ -12,13 +11,25 @@ import (
 )
 
 type Factory struct {
-	clients map[uint64]model.Client
+	clients            map[uint64]model.Client
+	clientConstructors map[string]func(uint64, model.ClientConfig) model.Client
 }
 
 // NewFactory 工厂方法创建支付客户端
 func NewFactory() *Factory {
 	factory := &Factory{
 		clients: make(map[uint64]model.Client),
+		clientConstructors: map[string]func(uint64, model.ClientConfig) model.Client{
+			model.WxApp:     weixin.NewWxAppPayClient,
+			model.WxPub:     weixin.NewWxPubPayClient,
+			model.WxNative:  weixin.NewWxNativePayClient,
+			model.WxLite:    weixin.NewWxLitePayClient,
+			model.AlipayPc:  ali.NewAliPcPayClient,
+			model.AlipayWap: ali.NewAliWapPayClient,
+			model.AlipayBar: ali.NewAliBarPayClient,
+			model.AlipayQr:  ali.NewAliQrPayClient,
+			model.Mock:      mock.NewMockPayClient,
+		},
 	}
 	return factory
 }
@@ -36,101 +47,49 @@ func (f *Factory) ClearClient(clientID uint64) {
 	delete(f.clients, clientID)
 }
 
-func (f *Factory) CreateOrUpdatePayClient(channelId uint64, channelCode string, config model.ClientConfig) (model.Client, error) {
+func (f *Factory) CreateOrUpdatePayClient(channelId uint64, channelCode string, config model.ClientConfig) error {
 	client, exit := f.clients[channelId]
 	if !exit {
-		newClient, err := getNewClient(channelId, channelCode, config)
+		newClient, err := f.getNewClient(channelId, channelCode, config)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		err = newClient.Init()
 		if err != nil {
-			return nil, err
+			return err
 		}
 		f.clients[channelId] = newClient
-		client = newClient
 	} else {
 		err := client.Refresh(config)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
-	return client, nil
+	return nil
 }
 
-func getNewClient(channelId uint64, channelCode string, config model.ClientConfig) (model.Client, error) {
-	var client model.Client
-
-	switch channelCode {
-	case model.WxApp, model.WxPub, model.WxNative, model.WxLite:
-		if c, ok := config.(weixin.ClientConfig); ok {
-			switch channelCode {
-			case model.WxApp:
-				client = weixin.NewWxAppPayClient(channelId, c)
-			case model.WxPub:
-				client = weixin.NewWxPubPayClient(channelId, c)
-			case model.WxNative:
-				client = weixin.NewWxNativePayClient(channelId, c)
-			case model.WxLite:
-				client = weixin.NewWxLitePayClient(channelId, c)
-			}
-		}
-	case model.AlipayPc, model.AlipayWap, model.AlipayApp, model.AlipayBar, model.AlipayQr:
-		if c, ok := config.(ali.ClientConfig); ok {
-			switch channelCode {
-			case model.AlipayPc:
-				client = ali.NewAliPcPayClient(channelId, c)
-			case model.AlipayWap:
-				client = ali.NewAliWapPayClient(channelId, c)
-			case model.AlipayApp:
-				return nil, errorx.NewInvalidArgumentError("not support alipay app")
-			case model.AlipayBar:
-				client = ali.NewAliBarPayClient(channelId, c)
-			case model.AlipayQr:
-				client = ali.NewAliQrPayClient(channelId, c)
-			}
-
-		}
-	case model.Mock:
-		if c, ok := config.(mock.ClientConfig); ok {
-			client = mock.NewMockPayClient(channelId, c)
-		}
-	default:
+func (f *Factory) getNewClient(channelId uint64, channelCode string, config model.ClientConfig) (model.Client, error) {
+	constructor, ok := f.clientConstructors[channelCode]
+	if !ok {
 		return nil, errorx.NewInvalidArgumentError(fmt.Sprintf("unsupported channel code: %s", channelCode))
 	}
-
+	client := constructor(channelId, config)
 	if client == nil {
 		return nil, errorx.NewInvalidArgumentError(fmt.Sprintf("unsupported channel code: %s", channelCode))
 	}
-
 	return client, nil
 }
 
-func GetClientConfig(channelCode string, config string) (clientConfig model.ClientConfig, err error) {
+func ParseClientConfig(channelCode string, config string) (clientConfig model.ClientConfig, err error) {
 	switch channelCode {
 	case model.WxApp, model.WxPub, model.WxNative, model.WxLite:
-		var wxClientConfig weixin.ClientConfig
-		err = json.Unmarshal([]byte(config), &wxClientConfig)
-		if err != nil {
-			return nil, err
-		}
-		clientConfig = wxClientConfig
+		clientConfig, err = weixin.ParseWxClientConfig(config)
 	case model.AlipayBar, model.AlipayApp, model.AlipayPc, model.AlipayWap, model.AlipayQr:
-		var aliClientConfig ali.ClientConfig
-		err = json.Unmarshal([]byte(config), &aliClientConfig)
-		if err != nil {
-			return nil, err
-		}
-		clientConfig = aliClientConfig
+		clientConfig, err = ali.ParseAliClientConfig(config)
 	case model.Mock:
-		var mockClientConfig mock.ClientConfig
-		clientConfig = mockClientConfig
-		return clientConfig, nil
+		clientConfig, err = mock.ParseMockClientConfig(config)
 	default:
 		return nil, errorx.NewInvalidArgumentError(fmt.Sprintf("unsupported channel code: %s", channelCode))
 	}
-	if clientConfig == nil {
-		return nil, errorx.NewInvalidArgumentError(fmt.Sprintf("unsupported channel code: %s", channelCode))
-	}
-	return clientConfig, nil
+	return clientConfig, err
 }

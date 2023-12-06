@@ -13,9 +13,17 @@ type WapPayClient struct {
 	Client
 }
 
-func NewAliWapPayClient(channelId uint64, config ClientConfig) *WapPayClient {
+// 编译时接口实现的检查
+var _ model.Client = (*WapPayClient)(nil)
+
+func NewAliWapPayClient(channelId uint64, config model.ClientConfig) model.Client {
+	aliConfig, ok := config.(ClientConfig)
+	if !ok {
+		logx.Error("config is not of type ali.ClientConfig")
+		return nil
+	}
 	return &WapPayClient{
-		Client{Config: &config, ChannelId: channelId},
+		Client{Config: &aliConfig, ChannelId: channelId},
 	}
 }
 
