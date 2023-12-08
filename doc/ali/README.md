@@ -11,10 +11,10 @@ fork 的项目，需要在本地启动后端服务，具体的可以参考[Simpl
 
 2. 配置PayDemo菜单
 
-![images7](../../../doc/images/img7.jpg)
+![images7](../images/img7.jpg)
 
 3. 配置权限
 
-![images8](../../../doc/images/img8.png)
+![images8](../images/img8.png)
 
 4. 支付测试

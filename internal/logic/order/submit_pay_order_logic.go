@@ -4,14 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/agui-coder/simple-admin-pay-common/payno"
 	"strconv"
 	"time"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
-	payClient "github.com/agui-coder/simple-admin-pay-api/common/pay/model"
-	"github.com/agui-coder/simple-admin-pay-api/common/payno"
-
+	"github.com/agui-coder/simple-admin-pay-common/payment/model"
 	"github.com/zeromicro/go-zero/core/errorx"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
@@ -67,7 +66,7 @@ func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *t
 		logx.Errorf("[validatePayChannelCanSubmit][渠道编号(%d) 找不到对应的支付客户端]", channel.Id)
 		return nil, err
 	}
-	unifiedOrderResp, err := client.UnifiedOrder(l.ctx, payClient.OrderUnifiedReq{
+	unifiedOrderResp, err := client.UnifiedOrder(l.ctx, model.OrderUnifiedReq{
 		DisplayMode:   req.DisplayMode,
 		UserIp:        userIP,
 		OutTradeNo:    no,
@@ -87,18 +86,20 @@ func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *t
 		if err != nil {
 			return nil, err
 		}
-		_, err = l.svcCtx.PayRpc.NotifyOrder(l.ctx, &payclient.NotifyOrderReq{
-			Status:            uint32(unifiedOrderResp.Status),
-			OutTradeNo:        unifiedOrderResp.OutTradeNo,
-			ChannelNotifyData: string(channelNotifyData),
-			SuccessTime:       unifiedOrderResp.SuccessTime.Unix(),
-			ChannelOrderNo:    unifiedOrderResp.ChannelOrderNo,
-			ChannelUserId:     unifiedOrderResp.ChannelUserId,
-			ChannelId:         *channel.Id,
-		})
-		if err != nil {
-			return nil, err
-		}
+		go func() {
+			_, err = l.svcCtx.PayRpc.NotifyOrder(context.Background(), &payclient.NotifyOrderReq{
+				Status:            uint32(unifiedOrderResp.Status),
+				OutTradeNo:        unifiedOrderResp.OutTradeNo,
+				ChannelNotifyData: string(channelNotifyData),
+				SuccessTime:       unifiedOrderResp.SuccessTime.Unix(),
+				ChannelOrderNo:    unifiedOrderResp.ChannelOrderNo,
+				ChannelUserId:     unifiedOrderResp.ChannelUserId,
+				ChannelId:         *channel.Id,
+			})
+			if err != nil {
+				logx.Error(err)
+			}
+		}()
 		if unifiedOrderResp.ChannelErrorCode != nil {
 			return nil, errorx.NewInvalidArgumentError(fmt.Sprintf("发起支付报错，错误码：%d，错误提示：%d",
 				unifiedOrderResp.ChannelErrorCode, unifiedOrderResp.ChannelErrorMsg))

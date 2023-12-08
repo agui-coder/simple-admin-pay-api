@@ -28,9 +28,9 @@
 
 * 如果回调地址是本地最好配置内网穿透，否则微信无法访问到回调地址，可以使用贝锐花生壳进行内网穿透，具体的可以参考[花生壳官方文档](https://hsk.oray.com/)
 
-## [微信支付测试](./common/pay/weixin/README.md)
+## [微信支付测试](./doc/weixin/README.md)
 
-## [支付宝支付测试](./common/pay/ali/README.md)
+## [支付宝支付测试](./doc/ali/README.md)
 
 
 [@Kevin](https://github.com/agui-coder)

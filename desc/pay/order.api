@@ -126,7 +126,7 @@ type (
 
 service Pay {
 
-    // SubmitPayOrder order information | 更新Order
+    // SubmitPayOrder order information | 提交退款Order
     @handler submitPayOrder
     post /order/submit (OrderSubmitReq) returns (OrderSubmitResp)
 

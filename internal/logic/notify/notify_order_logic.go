@@ -3,7 +3,8 @@ package notify
 import (
 	"context"
 	"encoding/json"
-	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
+
+	"github.com/agui-coder/simple-admin-pay-common/payment/model"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 

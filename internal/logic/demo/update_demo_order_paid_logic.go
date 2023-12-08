@@ -2,8 +2,9 @@ package demo
 
 import (
 	"context"
-	"github.com/agui-coder/simple-admin-pay-api/common/consts"
 	"strconv"
+
+	"github.com/agui-coder/simple-admin-pay-common/consts"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/pay"
 

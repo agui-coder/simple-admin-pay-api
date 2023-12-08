@@ -10,6 +10,7 @@ import (
 	demo "github.com/agui-coder/simple-admin-pay-api/internal/handler/demo"
 	notify "github.com/agui-coder/simple-admin-pay-api/internal/handler/notify"
 	order "github.com/agui-coder/simple-admin-pay-api/internal/handler/order"
+	refund "github.com/agui-coder/simple-admin-pay-api/internal/handler/refund"
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -175,6 +176,25 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Method:  http.MethodPost,
 					Path:    "/demo-order/update-paid",
 					Handler: demo.UpdateDemoOrderPaidHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/pay"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Authority},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/refund/get",
+					Handler: refund.GetRefundHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/refund/page",
+					Handler: refund.GetRefundPageHandler(serverCtx),
 				},
 			}...,
 		),

@@ -2,8 +2,8 @@ package svc
 
 import (
 	"context"
-	"github.com/agui-coder/simple-admin-pay-api/common/pay"
-	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
+	"github.com/agui-coder/simple-admin-pay-common/payment"
+	"github.com/agui-coder/simple-admin-pay-common/payment/model"
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 	"github.com/zeromicro/go-zero/core/collection"
 	"log"
@@ -27,7 +27,7 @@ type ServiceContext struct {
 	PayRpc           payclient.Pay
 	Redis            *redis.Redis
 	Trans            *i18n.Translator
-	PayClientFactory *pay.Factory
+	PayClientFactory *payment.Factory
 	PayClientCache   *collection.Cache
 }
 
@@ -45,7 +45,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Redis:            rds,
 		PayRpc:           payclient.NewPay(zrpc.NewClientIfEnable(c.PayRpc)),
 		Trans:            trans,
-		PayClientFactory: pay.NewFactory(),
+		PayClientFactory: payment.NewFactory(),
 		PayClientCache:   cache,
 	}
 }
@@ -54,7 +54,7 @@ func (s *ServiceContext) GetPayClient(ctx context.Context, id uint64) (model.Cli
 	take, err := s.PayClientCache.Take("pay_client:"+strconv.FormatUint(id, 10), func() (any, error) {
 		channel, err := s.PayRpc.GetChannelById(ctx, &payclient.IDReq{Id: id})
 		if err == nil {
-			payConfig, err := pay.ParseClientConfig(*channel.Code, *channel.Config)
+			payConfig, err := payment.ParseClientConfig(*channel.Code, *channel.Config)
 			if err != nil {
 				return nil, err
 			}

@@ -444,3 +444,54 @@ type PageAtPath struct {
 	// max : 100000
 	PageSize int32 `path:"size" validate:"required,number,lt=100000"`
 }
+
+// swagger:model RefundInfo
+type RefundInfo struct {
+	Id                  uint64 `json:"id"`
+	Created_at          int64  `json:"createdAt"`
+	Updated_at          int64  `json:"updatedAt"`
+	Status              uint32 `json:"status"`
+	No                  string `json:"no"`
+	App_id              uint64 `json:"appId"`
+	Channel_id          uint64 `json:"channelId"`
+	Channel_code        string `json:"channelCode"`
+	Order_id            uint64 `json:"orderId"`
+	Order_no            string `json:"orderNo"`
+	Merchant_order_id   string `json:"merchantOrderId"`
+	Merchant_refund_id  string `json:"merchantRefundId"`
+	Notify_url          string `json:"notifyUrl"`
+	Pay_price           int64  `json:"payPrice"`
+	Refund_price        int64  `json:"refundPrice"`
+	Reason              string `json:"reason"`
+	User_ip             string `json:"userIp"`
+	Channel_order_no    string `json:"channelOrderNo"`
+	Channel_refund_no   string `json:"channelRefundNo"`
+	Success_time        int64  `json:"successTime"`
+	Channel_error_code  string `json:"channelErrorCode"`
+	Channel_error_msg   string `json:"channelErrorMsg"`
+	Channel_notify_data string `json:"channelNotifyData"`
+}
+
+// swagger:model RefundPageReq
+type RefundPageReq struct {
+	PageInfo
+	AppId           *uint64 `json:"appId"`
+	ChannelCode     *string `json:"channelCode"`
+	Status          *uint32 `json:"status"`
+	MerchantOrderId *string `json:"merchantOrderId"`
+	ChannelOrderNo  *string `json:"channelOrderNo"`
+	No              *string `json:"no"`
+	CreateAt        []int64 `json:"createAt"`
+}
+
+// swagger:model RefundInfoResp
+type RefundInfoResp struct {
+	BaseDataInfo
+	Data *RefundInfo `json:"data"`
+}
+
+// swagger:model RefundPageResp
+type RefundPageResp struct {
+	BaseListInfo
+	Data []*RefundInfo `json:"data"`
+}

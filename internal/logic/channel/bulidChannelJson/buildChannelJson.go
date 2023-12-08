@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/agui-coder/simple-admin-pay-api/common/pay/ali"
-	"github.com/agui-coder/simple-admin-pay-api/common/pay/model"
+
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
+	"github.com/agui-coder/simple-admin-pay-common/payment/ali"
+	"github.com/agui-coder/simple-admin-pay-common/payment/model"
 	"github.com/go-pay/gopay/alipay"
 	"github.com/go-pay/gopay/alipay/cert"
 	"github.com/suyuan32/simple-admin-common/utils/pointy"

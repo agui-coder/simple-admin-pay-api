@@ -1,0 +1,76 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type (
+    RefundInfo{
+           id uint64  `json:"id"`
+           created_at int64 `json:"createdAt"`
+           updated_at int64 `json:"updatedAt"`
+           status uint32 `json:"status"`
+           no string `json:"no"`
+           app_id uint64 `json:"appId"`
+           channel_id uint64 `json:"channelId"`
+           channel_code string `json:"channelCode"`
+           order_id uint64 `json:"orderId"`
+           order_no string `json:"orderNo"`
+           merchant_order_id string `json:"merchantOrderId"`
+           merchant_refund_id string `json:"merchantRefundId"`
+           notify_url string `json:"notifyUrl"`
+           pay_price int64 `json:"payPrice"`
+           refund_price int64 `json:"refundPrice"`
+           reason string `json:"reason"`
+           user_ip string `json:"userIp"`
+           channel_order_no string `json:"channelOrderNo"`
+           channel_refund_no string `json:"channelRefundNo"`
+           success_time int64 `json:"successTime"`
+           channel_error_code string `json:"channelErrorCode"`
+           channel_error_msg string `json:"channelErrorMsg"`
+           channel_notify_data string `json:"channelNotifyData"`
+    }
+
+    RefundPageReq{
+        PageInfo
+        AppId *uint64 `json:"appId"`
+        ChannelCode *string `json:"channelCode"`
+        Status *uint32 `json:"status"`
+        MerchantOrderId *string `json:"merchantOrderId"`
+        ChannelOrderNo *string `json:"channelOrderNo"`
+        No *string `json:"no"`
+        CreateAt []int64 `json:"createAt"`
+    }
+
+    RefundInfoResp{
+        BaseDataInfo
+        Data *RefundInfo `json:"data"`
+    }
+
+    RefundPageResp{
+        BaseListInfo
+        Data []*RefundInfo `json:"data"`
+    }
+)
+
+
+@server(
+    group: refund
+    middleware: Authority
+    prefix : /pay
+)
+
+service Pay {
+
+    // Get Refund information | 获取Refund
+    @handler getRefund
+    post /refund/get (IDReq) returns (RefundInfoResp)
+
+    // Get Refund Page | 获取Refund分页列表
+    @handler getRefundPage
+    post /refund/page (RefundPageReq) returns (RefundPageResp)
+}

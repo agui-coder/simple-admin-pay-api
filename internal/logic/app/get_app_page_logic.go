@@ -2,10 +2,9 @@ package app
 
 import (
 	"context"
+	"github.com/agui-coder/simple-admin-pay-common/convert"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
-
-	"github.com/agui-coder/simple-admin-pay-api/common/convert"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
