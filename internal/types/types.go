@@ -445,6 +445,12 @@ type PageAtPath struct {
 	PageSize int32 `path:"size" validate:"required,number,lt=100000"`
 }
 
+// swagger:model PayRefundNotifyReq
+type PayRefundNotifyReq struct {
+	MerchantOrderId string `json:"merchantOrderId"`
+	PayRefundId     uint64 `json:"payRefundId"`
+}
+
 // swagger:model RefundInfo
 type RefundInfo struct {
 	Id                  uint64 `json:"id"`

@@ -44,6 +44,10 @@ type(
         page int32 `path:"page" validate:"required,number,gt=0"`
         pageSize int32 `path:"size" validate:"required,number,lt=100000"`
     }
+    PayRefundNotifyReq{
+        merchantOrderId string `json:"merchantOrderId"`
+        payRefundId uint64 `json:"payRefundId"`
+    }
 )
 
 
@@ -65,4 +69,10 @@ service Pay {
     // updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
     @handler updateDemoOrderPaid
     post /demo-order/update-paid (PayOrderNotifyReq) returns (BaseMsgResp)
+    // refundDemoOrder demoOrder information | refund demoOrder
+    @handler refundDemoOrder
+    post /demo-order/refund (IDReq) returns (BaseMsgResp)
+    // updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+    @handler updateDemoRefundPaid
+    post /demo-refund/update-paid (PayRefundNotifyReq) returns (BaseMsgResp)
 }

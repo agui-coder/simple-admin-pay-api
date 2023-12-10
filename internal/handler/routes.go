@@ -177,6 +177,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/demo-order/update-paid",
 					Handler: demo.UpdateDemoOrderPaidHandler(serverCtx),
 				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/demo-order/refund",
+					Handler: demo.RefundDemoOrderHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/demo-refund/update-paid",
+					Handler: demo.UpdateDemoRefundPaidHandler(serverCtx),
+				},
 			}...,
 		),
 		rest.WithPrefix("/pay"),
