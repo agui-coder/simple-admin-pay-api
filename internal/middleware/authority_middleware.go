@@ -24,10 +24,13 @@ func NewAuthorityMiddleware(cbn *casbin.Enforcer, rds *redis.Redis, trans *i18n.
 	}
 }
 
+const UserIp = "UserIp"
+const UserId = "UserId"
+
 func (m *AuthorityMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := context.WithValue(r.Context(), "userId", "test1")
-		ctx = context.WithValue(ctx, "userIp", netutil.GetRequestPublicIp(r))
+		ctx := context.WithValue(r.Context(), UserId, "test1")
+		ctx = context.WithValue(ctx, UserIp, netutil.GetRequestPublicIp(r))
 		next(w, r.WithContext(ctx))
 		return
 	}

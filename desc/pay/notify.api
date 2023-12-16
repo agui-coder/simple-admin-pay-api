@@ -10,9 +10,8 @@ info(
 
 type (
     notifyRep{
-        channelId uint64 `path:"channelId"`
-        body []byte `json:"body,optional"`
-        header map[string][]string `form:"header,optional"`
+        channelCode string `path:"channelCode"`
+        r []byte `json:"r,optional"`
     }
 )
 
@@ -27,7 +26,7 @@ service Pay {
 
     // SubmitPayOrder order information | 支付回调
     @handler notifyOrder
-    post /notify/order/:channelId (notifyRep) returns (string)
+    post /notify/order/:channelCode (notifyRep) returns (string)
 
     // Update order information | 退款回调
     @handler notifyRefund

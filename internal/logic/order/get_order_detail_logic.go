@@ -31,10 +31,6 @@ func (l *GetOrderDetailLogic) GetOrderDetail(req *types.IDReq) (resp *types.Orde
 	if err != nil {
 		return nil, err
 	}
-	app, err := l.svcCtx.PayRpc.GetApp(l.ctx, &payclient.IDReq{Id: *order.AppId})
-	if err != nil {
-		return nil, err
-	}
 	extension, err := l.svcCtx.PayRpc.GetOrderExtension(l.ctx, &payclient.IDReq{Id: *order.ExtensionId})
 	if err != nil {
 		return nil, err
@@ -52,13 +48,10 @@ func (l *GetOrderDetailLogic) GetOrderDetail(req *types.IDReq) (resp *types.Orde
 					UpdatedAt: order.UpdatedAt,
 				},
 				Status:          order.Status,
-				AppId:           order.AppId,
-				ChannelId:       order.ChannelId,
 				ChannelCode:     order.ChannelCode,
 				MerchantOrderId: order.MerchantOrderId,
 				Subject:         order.Subject,
 				Body:            order.Body,
-				NotifyUrl:       order.NotifyUrl,
 				Price:           order.Price,
 				ChannelFeeRate:  order.ChannelFeeRate,
 				ChannelFeePrice: order.ChannelFeePrice,
@@ -72,7 +65,6 @@ func (l *GetOrderDetailLogic) GetOrderDetail(req *types.IDReq) (resp *types.Orde
 				ChannelUserId:   order.ChannelUserId,
 				ChannelOrderNo:  order.ChannelOrderNo,
 			},
-			AppName: app.Name,
 			Extension: &types.OrderExtension{
 				No:                extension.No,
 				ChannelNotifyData: extension.ChannelNotifyData,

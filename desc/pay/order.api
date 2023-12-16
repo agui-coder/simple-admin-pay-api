@@ -8,12 +8,6 @@ type (
         // Status
         Status  *uint32 `json:"status,optional"`
 
-        // AppId
-        AppId  *uint64 `json:"appId,optional"`
-
-        // ChannelId
-        ChannelId  *uint64 `json:"channelId,optional"`
-
         // ChannelCode
         ChannelCode  *string `json:"channelCode,optional"`
 
@@ -25,9 +19,6 @@ type (
 
         // Body
         Body  *string `json:"body,optional"`
-
-        // NotifyUrl
-        NotifyUrl  *string `json:"notifyUrl,optional"`
 
         // Price
         Price  *int32 `json:"price,optional"`
@@ -78,7 +69,6 @@ type (
 
     OrderDetail{
         OrderInfo
-        appName *string `json:"appName"`
         extension *OrderExtension `json:"extension"`
     }
 
@@ -90,7 +80,6 @@ type (
 
     OrderPageReq{
         PageInfo
-        AppId *uint64 `json:"appId"`
         ChannelCode *string `json:"channelCode"`
         Status *uint32 `json:"status"`
         MerchantOrderId *string `json:"merchantOrderId"`

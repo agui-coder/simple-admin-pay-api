@@ -139,112 +139,12 @@ type ProductPropertyValueDetailResp struct {
 	ValueName *string `json:"valueName"`
 }
 
-// The response data of app information | App信息
-// swagger:model AppInfo
-type AppInfo struct {
-	BaseIDInfo
-	// Status
-	Status *uint32 `json:"status,optional" validate:"omitempty,"`
-	// Name
-	Name *string `json:"name,optional" validate:"omitempty,"`
-	// Remark
-	Remark *string `json:"remark,optional" validate:"omitempty,"`
-	// OrderNotifyUrl
-	OrderNotifyUrl *string `json:"orderNotifyUrl,optional" validate:"omitempty,"`
-	// RefundNotifyUrl
-	RefundNotifyUrl *string `json:"refundNotifyUrl,optional" validate:"omitempty,"`
-}
-
-// swagger:model AppInfoResp
-type AppInfoResp struct {
-	BaseDataInfo
-	Data AppInfo `json:"appInfo"`
-}
-
-// swagger:model AppBaseReq
-type AppBaseReq struct {
-	// Status
-	Status uint32 `json:"status" validate:"inEnum=common_status"`
-	// Name
-	Name string `json:"name"`
-	// Remark
-	Remark *string `json:"remark,optional"`
-	// OrderNotifyUrl
-	OrderNotifyUrl string `json:"orderNotifyUrl" validate:"url"`
-	// RefundNotifyUrl
-	RefundNotifyUrl string `json:"refundNotifyUrl" validate:"url"`
-}
-
-// swagger:model AppBaseResp
-type AppBaseResp struct {
-	// Status
-	Status *uint32 `json:"status,optional"`
-	// Name
-	Name *string `json:"name,optional"`
-	// Remark
-	Remark *string `json:"remark,optional"`
-	// OrderNotifyUrl
-	OrderNotifyUrl *string `json:"orderNotifyUrl,optional"`
-	// RefundNotifyUrl
-	RefundNotifyUrl *string `json:"refundNotifyUrl,optional"`
-}
-
-// swagger:model AppCreateReq
-type AppCreateReq struct {
-	AppBaseReq
-}
-
-// swagger:model AppUpdateReq
-type AppUpdateReq struct {
-	AppBaseReq
-	Id uint64 `json:"id"`
-}
-
-// swagger:model AppPageItemResp
-type AppPageItemResp struct {
-	AppBaseResp
-	Id           *uint64   `json:"id"`
-	CreateAt     *int64    `json:"createAt"`
-	ChannelCodes []*string `json:"channelCodes"`
-}
-
-// The response data of app list | App列表数据
-// swagger:model AppListResp
-type AppListResp struct {
-	BaseListInfo
-	// App list data | App列表数据
-	Data []AppPageItemResp `json:"data"`
-}
-
-// Get app list request params | App列表请求参数
-// swagger:model AppListReq
-type AppListReq struct {
-	PageInfo
-	// Name 应用名
-	Name *string `json:"name,optional"`
-	// Status 开启状态
-	Status *uint8 `json:"status,optional"`
-	// CreateTime 创建时间
-	CreateAt []int64 `json:"createAt,optional"`
-}
-
-// swagger:model AppUpdateStatusReq
-type AppUpdateStatusReq struct {
-	Id uint64 `json:"id"`
-	// Status
-	Status uint32 `json:"status"`
-}
-
 // The response data of order information | Order信息
 // swagger:model OrderInfo
 type OrderInfo struct {
 	BaseIDInfo
 	// Status
 	Status *uint32 `json:"status,optional"`
-	// AppId
-	AppId *uint64 `json:"appId,optional"`
-	// ChannelId
-	ChannelId *uint64 `json:"channelId,optional"`
 	// ChannelCode
 	ChannelCode *string `json:"channelCode,optional"`
 	// MerchantOrderId
@@ -253,8 +153,6 @@ type OrderInfo struct {
 	Subject *string `json:"subject,optional"`
 	// Body
 	Body *string `json:"body,optional"`
-	// NotifyUrl
-	NotifyUrl *string `json:"notifyUrl,optional"`
 	// Price
 	Price *int32 `json:"price,optional"`
 	// ChannelFeeRate
@@ -294,7 +192,6 @@ type OrderExtension struct {
 
 type OrderDetail struct {
 	OrderInfo
-	AppName   *string         `json:"appName"`
 	Extension *OrderExtension `json:"extension"`
 }
 
@@ -307,7 +204,6 @@ type OrderDetailResp struct {
 // swagger:model OrderPageReq
 type OrderPageReq struct {
 	PageInfo
-	AppId           *uint64 `json:"appId"`
 	ChannelCode     *string `json:"channelCode"`
 	Status          *uint32 `json:"status"`
 	MerchantOrderId *string `json:"merchantOrderId"`
@@ -338,67 +234,9 @@ type OrderSubmitResp struct {
 	DisplayContent *string `json:"displayContent"`
 }
 
-type ChannelBase struct {
-	Status  uint32  `json:"status" validate:"inEnum=common_status"`
-	Remark  *string `json:"remark,optional"`
-	FeeRate float64 `json:"feeRate"`
-	AppId   uint64  `json:"appId"`
-}
-
-// swagger:model ChannelBaseResp
-type ChannelBaseResp struct {
-	Status  *uint32  `json:"status"`
-	Remark  *string  `json:"remark,optional"`
-	FeeRate *float64 `json:"feeRate"`
-	AppId   *uint64  `json:"appId"`
-}
-
-// swagger:model ChannelCreateReq
-type ChannelCreateReq struct {
-	ChannelBase
-	Code   string `json:"code"`
-	Config string `json:"config"`
-}
-
-// swagger:model ChannelReq
-type ChannelReq struct {
-	Id    *uint64 `json:"id,optional"`
-	AppId *uint64 `json:"appId,optional"`
-	Code  *string `json:"code,optional "`
-}
-
-// swagger:model ChannelInfo
-type ChannelInfo struct {
-	ChannelBaseResp
-	Id       *uint64 `json:"id,optional"`
-	Code     *string `json:"code,optional "`
-	CreateAt *int64  `json:"createAt,optional"`
-	Config   *string `json:"config"`
-}
-
-// swagger:model ChannelInfoResp
-type ChannelInfoResp struct {
-	BaseDataInfo
-	Data ChannelInfo `json:"data"`
-}
-
-// swagger:model ChannelUpdateReq
-type ChannelUpdateReq struct {
-	ChannelBase
-	Id     uint64 `json:"code"`
-	Config string `json:"config"`
-}
-
-// swagger:model ChannelListResp
-type ChannelListResp struct {
-	BaseListInfo
-	Channels []*string `json:"channels"`
-}
-
 type NotifyRep struct {
-	ChannelId uint64              `path:"channelId"`
-	Body      []byte              `json:"body,optional"`
-	Header    map[string][]string `form:"header,optional"`
+	ChannelCode string `path:"channelCode"`
+	R           []byte `json:"r,optional"`
 }
 
 // demoOrder demoOrder information | demoOrder信息
@@ -458,14 +296,11 @@ type RefundInfo struct {
 	Updated_at          int64  `json:"updatedAt"`
 	Status              uint32 `json:"status"`
 	No                  string `json:"no"`
-	App_id              uint64 `json:"appId"`
-	Channel_id          uint64 `json:"channelId"`
 	Channel_code        string `json:"channelCode"`
 	Order_id            uint64 `json:"orderId"`
 	Order_no            string `json:"orderNo"`
 	Merchant_order_id   string `json:"merchantOrderId"`
 	Merchant_refund_id  string `json:"merchantRefundId"`
-	Notify_url          string `json:"notifyUrl"`
 	Pay_price           int64  `json:"payPrice"`
 	Refund_price        int64  `json:"refundPrice"`
 	Reason              string `json:"reason"`
@@ -481,7 +316,6 @@ type RefundInfo struct {
 // swagger:model RefundPageReq
 type RefundPageReq struct {
 	PageInfo
-	AppId           *uint64 `json:"appId"`
 	ChannelCode     *string `json:"channelCode"`
 	Status          *uint32 `json:"status"`
 	MerchantOrderId *string `json:"merchantOrderId"`

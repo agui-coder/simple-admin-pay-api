@@ -26,7 +26,7 @@ import (
 	"flag"
 	"fmt"
 
-	"github.com/agui-coder/simple-admin-pay-common/consts"
+	"github.com/agui-coder/simple-admin-pay-api/internal/consts"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
 

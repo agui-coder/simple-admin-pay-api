@@ -23,7 +23,6 @@ func NewGetRefundLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetRefu
 }
 
 func (l *GetRefundLogic) GetRefund(req *types.IDReq) (resp *types.RefundInfoResp, err error) {
-	// todo: add your logic here and delete this line
 
 	return
 }

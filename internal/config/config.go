@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/agui-coder/simple-admin-pay-common/payment/model"
 	"github.com/suyuan32/simple-admin-common/config"
 	"github.com/suyuan32/simple-admin-common/plugins/casbin"
 	"github.com/zeromicro/go-zero/core/stores/redis"
@@ -11,11 +10,10 @@ import (
 
 type Config struct {
 	rest.RestConf
-	Auth          rest.AuthConf
-	CROSConf      config.CROSConf
-	PayRpc        zrpc.RpcClientConf
-	DatabaseConf  config.DatabaseConf
-	RedisConf     redis.RedisConf
-	CasbinConf    casbin.CasbinConf
-	PayProperties model.Properties
+	Auth         rest.AuthConf
+	CROSConf     config.CROSConf
+	PayRpc       zrpc.RpcClientConf
+	DatabaseConf config.DatabaseConf
+	RedisConf    redis.RedisConf
+	CasbinConf   casbin.CasbinConf
 }

@@ -1,6 +1,7 @@
 package notify
 
 import (
+	"github.com/agui-coder/simple-admin-pay-rpc/payment/model"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -33,16 +34,11 @@ func NotifyOrderHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			httpx.ErrorCtx(r.Context(), w, err)
 		}
 		ctx := r.Context()
-		client, err := svcCtx.GetPayClient(ctx, req.ChannelId)
+		req.R, err = model.ParseOrderNotify(req.ChannelCode, r)
 		if err != nil {
-			httpx.ErrorCtx(ctx, w, err)
-		}
-		orderResp, err := client.ParseOrderNotify(r)
-		if err != nil {
-			httpx.ErrorCtx(ctx, w, err)
+			httpx.ErrorCtx(r.Context(), w, err)
 		}
 		l := notify.NewNotifyOrderLogic(ctx, svcCtx)
-		l.OrderResp = orderResp
 		resp, err := l.NotifyOrder(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)

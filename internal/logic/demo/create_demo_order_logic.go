@@ -2,6 +2,7 @@ package demo
 
 import (
 	"context"
+	"github.com/agui-coder/simple-admin-pay-api/internal/middleware"
 
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
@@ -25,8 +26,8 @@ func NewCreateDemoOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 }
 
 func (l *CreateDemoOrderLogic) CreateDemoOrder(req *types.CreateDemoOrderReq) (resp *types.BaseMsgResp, err error) {
-	userId := l.ctx.Value("userId").(string)
-	userIp := l.ctx.Value("userIp").(string)
+	userId := l.ctx.Value(middleware.UserId).(string)
+	userIp := l.ctx.Value(middleware.UserIp).(string)
 	data, err := l.svcCtx.PayRpc.CreateDemoOrder(l.ctx, &payclient.PayDemoOrderCreateReq{UserId: userId, SpuId: req.SpuId, UserIp: userIp})
 	if err != nil {
 		return nil, err

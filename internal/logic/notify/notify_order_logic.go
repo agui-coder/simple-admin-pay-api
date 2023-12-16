@@ -2,10 +2,6 @@ package notify
 
 import (
 	"context"
-	"encoding/json"
-
-	"github.com/agui-coder/simple-admin-pay-common/payment/model"
-
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
@@ -16,9 +12,8 @@ import (
 
 type NotifyOrderLogic struct {
 	logx.Logger
-	ctx       context.Context
-	svcCtx    *svc.ServiceContext
-	OrderResp *model.OrderResp
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
 }
 
 func NewNotifyOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *NotifyOrderLogic {
@@ -29,18 +24,9 @@ func NewNotifyOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Notif
 }
 
 func (l *NotifyOrderLogic) NotifyOrder(req *types.NotifyRep) (resp string, err error) {
-	channelNotifyData, err := json.Marshal(l.OrderResp)
-	if err != nil {
-		return "error", nil
-	}
 	_, err = l.svcCtx.PayRpc.NotifyOrder(l.ctx, &payclient.NotifyOrderReq{
-		ChannelId:         req.ChannelId,
-		Status:            uint32(l.OrderResp.Status),
-		OutTradeNo:        l.OrderResp.OutTradeNo,
-		ChannelNotifyData: string(channelNotifyData),
-		SuccessTime:       l.OrderResp.SuccessTime.Unix(),
-		ChannelOrderNo:    l.OrderResp.ChannelOrderNo,
-		ChannelUserId:     l.OrderResp.ChannelUserId,
+		Code: req.ChannelCode,
+		R:    req.R,
 	})
 	if err != nil {
 		return "error", err

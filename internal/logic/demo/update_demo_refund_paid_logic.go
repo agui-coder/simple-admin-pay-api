@@ -2,9 +2,9 @@ package demo
 
 import (
 	"context"
-	"github.com/agui-coder/simple-admin-pay-common/consts"
-	"github.com/agui-coder/simple-admin-pay-rpc/pay"
 	"strconv"
+
+	"github.com/agui-coder/simple-admin-pay-rpc/pay"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
@@ -34,5 +34,5 @@ func (l *UpdateDemoRefundPaidLogic) UpdateDemoRefundPaid(req *types.PayRefundNot
 	if err != nil {
 		return nil, err
 	}
-	return &types.BaseMsgResp{Code: int(consts.SUCCESS), Msg: data.Msg}, nil
+	return &types.BaseMsgResp{Msg: data.Msg}, nil
 }

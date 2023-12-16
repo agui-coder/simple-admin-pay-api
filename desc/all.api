@@ -1,7 +1,5 @@
 import "base.api"
-import "./pay/app.api"
 import "./pay/order.api"
-import "./pay/channel.api"
 import "./pay/notify.api"
 import "./pay/demo.api"
 import "./pay/refund.api"

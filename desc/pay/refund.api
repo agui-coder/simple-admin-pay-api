@@ -15,14 +15,11 @@ type (
            updated_at int64 `json:"updatedAt"`
            status uint32 `json:"status"`
            no string `json:"no"`
-           app_id uint64 `json:"appId"`
-           channel_id uint64 `json:"channelId"`
            channel_code string `json:"channelCode"`
            order_id uint64 `json:"orderId"`
            order_no string `json:"orderNo"`
            merchant_order_id string `json:"merchantOrderId"`
            merchant_refund_id string `json:"merchantRefundId"`
-           notify_url string `json:"notifyUrl"`
            pay_price int64 `json:"payPrice"`
            refund_price int64 `json:"refundPrice"`
            reason string `json:"reason"`
@@ -37,7 +34,6 @@ type (
 
     RefundPageReq{
         PageInfo
-        AppId *uint64 `json:"appId"`
         ChannelCode *string `json:"channelCode"`
         Status *uint32 `json:"status"`
         MerchantOrderId *string `json:"merchantOrderId"`
