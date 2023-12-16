@@ -114,11 +114,11 @@ export default function () {
           const payContent:DisplayContent = JSON.parse(res.displayContent);
           console.info(payContent)
           Taro.requestPayment({
-            timeStamp:payContent.TimeStamp,
-            nonceStr:payContent.NonceStr,
-            package:payContent.PackageValue,
-            signType:payContent.SignType,
-            paySign:payContent.PaySign,
+            timeStamp:payContent.timeStamp,
+            nonceStr:payContent.nonceStr,
+            package:payContent.package,
+            signType:payContent.signType,
+            paySign:payContent.paySign,
             success:function(response){
                 if(response.errMsg=="requestPayment:ok"){
                     Taro.navigateTo({
@@ -127,6 +127,7 @@ export default function () {
                 }
             },
             fail:function(response){
+              console.log(response)
                 Taro.showToast({
                     icon:'error',
                     title:'您取消了支付'

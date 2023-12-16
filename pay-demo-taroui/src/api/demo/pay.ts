@@ -39,12 +39,12 @@ export interface SubmitOrderVO {
 }
 
 export interface DisplayContent {
-    Appid: string;
-    TimeStamp: string;
-    NonceStr: string;
-    PackageValue: string;
-    SignType: any;
-    PaySign: string;
+    appid: string;
+    timeStamp: string;
+    nonceStr: string;
+    package: string;
+    signType: any;
+    paySign: string;
   }
 
 export interface SubmitOrderResponse {
@@ -70,10 +70,10 @@ export function getDemoOrder(id: number) {
 }
 
 // 获得示例订单分页
-export function getDemoOrderPage(query: PageParam): Promise<DemoOrderPageResponse> {
-  return defHttp.get({
+export function getDemoOrderPage(data: PageParam): Promise<DemoOrderPageResponse> {
+  return defHttp.post({
     url: '/pay/demo-order/page',
-    params: query
+    data
   })
 }
 // 提交支付订单
