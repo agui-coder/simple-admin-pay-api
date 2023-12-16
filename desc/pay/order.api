@@ -119,10 +119,6 @@ service Pay {
     @handler submitPayOrder
     post /order/submit (OrderSubmitReq) returns (OrderSubmitResp)
 
-    // Update order information | 更新Order
-    @handler updateOrder
-    post /order/update (OrderInfo) returns (BaseMsgResp)
-
     // Get order information | 获取Order
     @handler getOrder
     post /order/get (IDReq) returns (OrderInfoResp)

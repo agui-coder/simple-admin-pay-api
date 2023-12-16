@@ -291,26 +291,26 @@ type PayRefundNotifyReq struct {
 
 // swagger:model RefundInfo
 type RefundInfo struct {
-	Id                  uint64 `json:"id"`
-	Created_at          int64  `json:"createdAt"`
-	Updated_at          int64  `json:"updatedAt"`
-	Status              uint32 `json:"status"`
-	No                  string `json:"no"`
-	Channel_code        string `json:"channelCode"`
-	Order_id            uint64 `json:"orderId"`
-	Order_no            string `json:"orderNo"`
-	Merchant_order_id   string `json:"merchantOrderId"`
-	Merchant_refund_id  string `json:"merchantRefundId"`
-	Pay_price           int64  `json:"payPrice"`
-	Refund_price        int64  `json:"refundPrice"`
-	Reason              string `json:"reason"`
-	User_ip             string `json:"userIp"`
-	Channel_order_no    string `json:"channelOrderNo"`
-	Channel_refund_no   string `json:"channelRefundNo"`
-	Success_time        int64  `json:"successTime"`
-	Channel_error_code  string `json:"channelErrorCode"`
-	Channel_error_msg   string `json:"channelErrorMsg"`
-	Channel_notify_data string `json:"channelNotifyData"`
+	Id                *uint64 `json:"id"`
+	CreatedAt         *int64  `json:"createdAt"`
+	UpdatedAt         *int64  `json:"updatedAt"`
+	Status            *uint32 `json:"status"`
+	No                *string `json:"no"`
+	ChannelCode       *string `json:"channelCode"`
+	OrderId           *uint64 `json:"orderId"`
+	OrderNo           *string `json:"orderNo"`
+	MerchantOrderId   *string `json:"merchantOrderId"`
+	MerchantRefundId  *string `json:"merchantRefundId"`
+	PayPrice          *int32  `json:"payPrice"`
+	RefundPrice       *int32  `json:"refundPrice"`
+	Reason            *string `json:"reason"`
+	UserIp            *string `json:"userIp"`
+	ChannelOrderNo    *string `json:"channelOrderNo"`
+	ChannelRefundNo   *string `json:"channelRefundNo"`
+	SuccessTime       *int64  `json:"successTime"`
+	ChannelErrorCode  *string `json:"channelErrorCode"`
+	ChannelErrorMsg   *string `json:"channelErrorMsg"`
+	ChannelNotifyData *string `json:"channelNotifyData"`
 }
 
 // swagger:model RefundPageReq

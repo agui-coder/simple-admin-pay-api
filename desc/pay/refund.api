@@ -10,26 +10,26 @@ info(
 
 type (
     RefundInfo{
-           id uint64  `json:"id"`
-           created_at int64 `json:"createdAt"`
-           updated_at int64 `json:"updatedAt"`
-           status uint32 `json:"status"`
-           no string `json:"no"`
-           channel_code string `json:"channelCode"`
-           order_id uint64 `json:"orderId"`
-           order_no string `json:"orderNo"`
-           merchant_order_id string `json:"merchantOrderId"`
-           merchant_refund_id string `json:"merchantRefundId"`
-           pay_price int64 `json:"payPrice"`
-           refund_price int64 `json:"refundPrice"`
-           reason string `json:"reason"`
-           user_ip string `json:"userIp"`
-           channel_order_no string `json:"channelOrderNo"`
-           channel_refund_no string `json:"channelRefundNo"`
-           success_time int64 `json:"successTime"`
-           channel_error_code string `json:"channelErrorCode"`
-           channel_error_msg string `json:"channelErrorMsg"`
-           channel_notify_data string `json:"channelNotifyData"`
+           id *uint64  `json:"id"`
+           createdAt *int64 `json:"createdAt"`
+           updatedAt *int64 `json:"updatedAt"`
+           status *uint32 `json:"status"`
+           no *string `json:"no"`
+           channelCode *string `json:"channelCode"`
+           orderId *uint64 `json:"orderId"`
+           orderNo *string `json:"orderNo"`
+           merchantOrderId *string `json:"merchantOrderId"`
+           merchantRefundId *string `json:"merchantRefundId"`
+           payPrice *int32 `json:"payPrice"`
+           refundPrice *int32 `json:"refundPrice"`
+           reason *string `json:"reason"`
+           userIp *string `json:"userIp"`
+           channelOrderNo *string `json:"channelOrderNo"`
+           channelRefundNo *string `json:"channelRefundNo"`
+           successTime *int64 `json:"successTime"`
+           channelErrorCode *string `json:"channelErrorCode"`
+           channelErrorMsg *string `json:"channelErrorMsg"`
+           channelNotifyData *string `json:"channelNotifyData"`
     }
 
     RefundPageReq{
