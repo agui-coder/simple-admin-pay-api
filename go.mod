@@ -1,17 +1,17 @@
 module github.com/agui-coder/simple-admin-pay-api
 
-go 1.20
+go 1.21.0
 
 require (
 	github.com/agui-coder/simple-admin-pay-rpc v1.1.0
 	github.com/casbin/casbin/v2 v2.79.0
-	github.com/duke-git/lancet/v2 v2.2.7
+	github.com/duke-git/lancet/v2 v2.2.8
 	github.com/go-playground/validator/v10 v10.16.0
 	github.com/suyuan32/simple-admin-common v1.2.5
 	github.com/zeromicro/go-zero v1.6.0
 )
 
-replace github.com/zeromicro/go-zero v1.6.0 => github.com/suyuan32/simple-admin-tools v1.6.0
+replace github.com/zeromicro/go-zero v1.6.0 => github.com/suyuan32/simple-admin-tools v1.6.2
 
 require (
 	ariga.io/atlas v0.14.1-0.20230918065911-83ad451a4935 // indirect
