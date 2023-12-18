@@ -1,4 +1,4 @@
-Name: Pay.api
+Name: pay.api
 Host: 0.0.0.0
 Port: 9107
 Timeout: 30000
@@ -26,12 +26,12 @@ Prometheus:
 
 PayRpc:
   Endpoints:
-    - 127.0.0.1:9007
+    - pay-rpc:9007
   NonBlock: true
 
 DatabaseConf:
   Type: mysql
-  Host: 127.0.0.1
+  Host: mysql-server
   Port: 3306
   DBName: simple_admin
   Username: # set your username
@@ -42,7 +42,7 @@ DatabaseConf:
   MysqlConfig: "&charset=utf8&loc=Asia%2fShanghai" # Mysql的额外配置
 
 RedisConf:
-  Host: 127.0.0.1:6379
+  Host: redis-server:6379
   Type: node
 
 CasbinConf:
