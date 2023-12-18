@@ -15,6 +15,7 @@ import (
 type ServiceContext struct {
 	Config    config.Config
 	Authority rest.Middleware
+	UserIp    rest.Middleware
 	Casbin    *casbin.Enforcer
 	PayRpc    payclient.Pay
 	Redis     *redis.Redis
@@ -31,5 +32,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Redis:     rds,
 		PayRpc:    payclient.NewPay(zrpc.NewClientIfEnable(c.PayRpc)),
 		Trans:     trans,
+		UserIp:    middleware.NewUserIpMiddleware().Handle,
 	}
 }

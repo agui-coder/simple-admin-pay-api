@@ -2,7 +2,7 @@ package demo
 
 import (
 	"context"
-	"github.com/agui-coder/simple-admin-pay-api/internal/middleware"
+	"github.com/agui-coder/simple-admin-pay-api/internal/consts"
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
@@ -25,7 +25,7 @@ func NewRefundDemoOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *R
 }
 
 func (l *RefundDemoOrderLogic) RefundDemoOrder(req *types.IDReq) (resp *types.BaseMsgResp, err error) {
-	userIp := l.ctx.Value(middleware.UserIp).(string)
+	userIp := l.ctx.Value(consts.UserIp).(string)
 	data, err := l.svcCtx.PayRpc.RefundDemoOrder(l.ctx, &payclient.RefundDemoOrderReq{
 		Id:     req.Id,
 		UserIp: userIp,

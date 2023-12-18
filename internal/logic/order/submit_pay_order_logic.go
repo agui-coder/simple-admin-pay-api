@@ -2,7 +2,7 @@ package order
 
 import (
 	"context"
-	"github.com/agui-coder/simple-admin-pay-api/internal/middleware"
+	"github.com/agui-coder/simple-admin-pay-api/internal/consts"
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 
 	"github.com/agui-coder/simple-admin-pay-api/internal/svc"
@@ -25,7 +25,7 @@ func NewSubmitPayOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Su
 }
 
 func (l *SubmitPayOrderLogic) SubmitPayOrder(req *types.OrderSubmitReq) (resp *types.OrderSubmitResp, err error) {
-	UserIp := l.ctx.Value(middleware.UserIp).(string)
+	UserIp := l.ctx.Value(consts.UserIp).(string)
 	data, err := l.svcCtx.PayRpc.SubmitPayOrder(l.ctx, &payclient.OrderSubmitReq{
 		Id:            req.Id,
 		ChannelCode:   req.ChannelCode,

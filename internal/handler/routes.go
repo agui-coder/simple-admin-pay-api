@@ -31,11 +31,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/order/submit",
-					Handler: order.SubmitPayOrderHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
 					Path:    "/order/get",
 					Handler: order.GetOrderHandler(serverCtx),
 				},
@@ -51,31 +46,40 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/pay"),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Authority},
+			[]rest.Middleware{serverCtx.UserIp},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
-					Path:    "/notify/order/:channelCode",
-					Handler: notify.NotifyOrderHandler(serverCtx),
-				},
-				{
-					Method:  http.MethodPost,
-					Path:    "/notify/refund",
-					Handler: notify.NotifyRefundHandler(serverCtx),
+					Path:    "/order/submit",
+					Handler: order.SubmitPayOrderHandler(serverCtx),
 				},
 			}...,
 		),
-		rest.WithPrefix("/pay"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/notify/order/:channelCode",
+				Handler: notify.NotifyOrderHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/notify/refund",
+				Handler: notify.NotifyRefundHandler(serverCtx),
+			},
+		},
 	)
 
 	server.AddRoutes(
 		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Authority},
+			[]rest.Middleware{serverCtx.Authority, serverCtx.UserIp},
 			[]rest.Route{
 				{
 					Method:  http.MethodPost,
@@ -109,7 +113,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/pay"),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 
 	server.AddRoutes(
@@ -128,6 +132,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				},
 			}...,
 		),
-		rest.WithPrefix("/pay"),
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)
 }

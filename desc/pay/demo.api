@@ -52,9 +52,9 @@ type(
 
 
 @server(
+    jwt: Auth
     group: demo
-    middleware: Authority
-    prefix: /pay
+    middleware: Authority,UserIp
 )
 service Pay {
     // createDemoOrder demoOrder information | 创建demoOrder

@@ -109,15 +109,11 @@ type (
 
 @server(
     group: order
+    jwt: Auth
     middleware: Authority
-    prefix : /pay
 )
 
 service Pay {
-
-    // SubmitPayOrder order information | 提交退款Order
-    @handler submitPayOrder
-    post /order/submit (OrderSubmitReq) returns (OrderSubmitResp)
 
     // Get order information | 获取Order
     @handler getOrder
@@ -130,4 +126,16 @@ service Pay {
     // Get Order Detail information | 获取Order 详情
     @handler getOrderDetail
     post /order/get-detail (IDReq) returns (OrderDetailResp)
+}
+
+@server(
+     group: order
+     middleware: UserIp
+)
+
+
+service Pay {
+    // SubmitPayOrder order information | 提交退款Order
+    @handler submitPayOrder
+    post /order/submit (OrderSubmitReq) returns (OrderSubmitResp)
 }

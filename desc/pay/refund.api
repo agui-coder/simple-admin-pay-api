@@ -56,8 +56,8 @@ type (
 
 @server(
     group: refund
+    jwt: Auth
     middleware: Authority
-    prefix : /pay
 )
 
 service Pay {
