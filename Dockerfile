@@ -14,6 +14,7 @@ ENV PROJECT=${PROJECT}
 ENV CONFIG_FILE=${CONFIG_FILE}
 
 ENV TZ=Asia/Shanghai
+RUN echo "http://mirrors.aliyun.com/alpine/v3.8/main/" > /etc/apk/repositories
 RUN apk update --no-cache && apk add --no-cache tzdata
 
 COPY ./${PROJECT}_api ./
