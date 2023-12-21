@@ -1,6 +1,7 @@
 package notify
 
 import (
+	"github.com/agui-coder/simple-admin-pay-rpc/payment/model"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -28,12 +29,16 @@ import (
 func NotifyRefundHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.NotifyRep
-		if err := httpx.Parse(r, &req, true); err != nil {
+		err := httpx.ParsePath(r, &req)
+		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
-			return
 		}
-
-		l := notify.NewNotifyRefundLogic(r.Context(), svcCtx)
+		ctx := r.Context()
+		req.R, err = model.ParseRefundNotify(req.ChannelCode, r)
+		if err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+		}
+		l := notify.NewNotifyRefundLogic(ctx, svcCtx)
 		resp, err := l.NotifyRefund(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)

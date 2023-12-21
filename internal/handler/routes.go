@@ -71,7 +71,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/notify/refund",
+				Path:    "/notify/refund/:channelCode",
 				Handler: notify.NotifyRefundHandler(serverCtx),
 			},
 		},

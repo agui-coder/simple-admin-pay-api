@@ -28,5 +28,5 @@ service Pay {
 
     // Update order information | 退款回调
     @handler notifyRefund
-    post /notify/refund (notifyRep) returns (string)
+    post /notify/refund/:channelCode (notifyRep) returns (string)
 }
