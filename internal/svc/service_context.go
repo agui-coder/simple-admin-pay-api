@@ -7,6 +7,7 @@ import (
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 	"github.com/casbin/casbin/v2"
 	"github.com/suyuan32/simple-admin-common/i18n"
+	"github.com/suyuan32/simple-admin-core/rpc/coreclient"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -18,6 +19,7 @@ type ServiceContext struct {
 	UserIp    rest.Middleware
 	Casbin    *casbin.Enforcer
 	PayRpc    payclient.Pay
+	CoreRpc   coreclient.Core
 	Redis     *redis.Redis
 	Trans     *i18n.Translator
 }
@@ -31,6 +33,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Authority: middleware.NewAuthorityMiddleware(cbn, rds, trans).Handle,
 		Redis:     rds,
 		PayRpc:    payclient.NewPay(zrpc.NewClientIfEnable(c.PayRpc)),
+		CoreRpc:   coreclient.NewCore(zrpc.NewClientIfEnable(c.CoreRpc)),
 		Trans:     trans,
 		UserIp:    middleware.NewUserIpMiddleware().Handle,
 	}

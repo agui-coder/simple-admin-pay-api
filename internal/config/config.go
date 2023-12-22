@@ -13,6 +13,7 @@ type Config struct {
 	Auth         rest.AuthConf
 	CROSConf     config.CROSConf
 	PayRpc       zrpc.RpcClientConf
+	CoreRpc      zrpc.RpcClientConf
 	DatabaseConf config.DatabaseConf
 	RedisConf    redis.RedisConf
 	CasbinConf   casbin.CasbinConf
