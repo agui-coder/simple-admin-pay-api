@@ -1,11 +1,11 @@
-//	pay
+//	Simple Admin Pay Service
 //
-//	Description: pay service
+//	Pay: Pay Service
 //
 //	Schemes: http, https
 //	Host: localhost:9107
 //	BasePath: /
-//	Version: 0.0.1
+//	Version: 1.1.1
 //	SecurityDefinitions:
 //	  Token:
 //	    type: apiKey

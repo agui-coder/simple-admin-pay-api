@@ -11,20 +11,20 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type RefundDemoOrderLogic struct {
+type CreateDemoRefundLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewRefundDemoOrderLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RefundDemoOrderLogic {
-	return &RefundDemoOrderLogic{
+func NewCreateDemoRefundLogic(ctx context.Context, svcCtx *svc.ServiceContext) *CreateDemoRefundLogic {
+	return &CreateDemoRefundLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx}
 }
 
-func (l *RefundDemoOrderLogic) RefundDemoOrder(req *types.IDReq) (resp *types.BaseMsgResp, err error) {
+func (l *CreateDemoRefundLogic) CreateDemoRefund(req *types.IDReq) (resp *types.BaseMsgResp, err error) {
 	userIp := l.ctx.Value(consts.UserIp).(string)
 	data, err := l.svcCtx.PayRpc.RefundDemoOrder(l.ctx, &payclient.RefundDemoOrderReq{
 		Id:     req.Id,

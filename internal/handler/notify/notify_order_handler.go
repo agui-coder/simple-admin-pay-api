@@ -11,11 +11,11 @@ import (
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
 )
 
-// swagger:route post /pay/order/notify/order notify NotifyOrder
+// swagger:route post /notify/order/{channelCode} notify NotifyOrder
 //
-// SubmitPayOrder order information | 更新Order
+// Notify order information | 支付回调
 //
-// SubmitPayOrder order information | 更新Order
+// Notify order information | 支付回调
 //
 // Parameters:
 //  + name: body

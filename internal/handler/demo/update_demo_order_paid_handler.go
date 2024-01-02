@@ -10,11 +10,11 @@ import (
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
 )
 
-// swagger:route post /pay/demo-order/update-paid demo UpdateDemoOrderPaid
+// swagger:route post /demo-order/update-paid demo UpdateDemoOrderPaid
 //
-// updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+// Update demoOrder status | 更新示例订单支付状态
 //
-// updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+// Update demoOrder status | 更新示例订单支付状态
 //
 // Parameters:
 //  + name: body

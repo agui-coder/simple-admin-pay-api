@@ -1,11 +1,11 @@
 syntax = "v1"
 
 info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
+    title: "pay api"
+    desc: "pay api"
+    author: "Kevin"
+    email: "894784649@qq.com"
+    version: "v1.0"
 )
 
 type(
@@ -57,22 +57,22 @@ type(
     middleware: Authority,UserIp
 )
 service Pay {
-    // createDemoOrder demoOrder information | 创建demoOrder
+    // Create demoOrder information | 创建示例订单
     @handler createDemoOrder
     post /demo-order/create (createDemoOrderReq) returns (BaseMsgResp)
-    // getDemoOrderPage demoOrder information | 获得demoOrder列表
+    // Get demoOrder Page information | 获得示例订单列表
     @handler getDemoOrderPage
     post /demo-order/page (PageInfo) returns (DemoOrderListResp)
-    // getDemoOrder demoOrder information | 获得demoOrder
+    // Get demoOrder information | 获得示例订单
     @handler getDemoOrder
     get /demo-order/get/:id (IDAtPathReq) returns (DemoOrderInfo)
-    // updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+    // Update demoOrder status | 更新示例订单支付状态
     @handler updateDemoOrderPaid
     post /demo-order/update-paid (PayOrderNotifyReq) returns (BaseMsgResp)
-    // refundDemoOrder demoOrder information | refund demoOrder
-    @handler refundDemoOrder
+    // Create demoRefund information | 创建退款订单
+    @handler createDemoRefund
     post /demo-order/refund (IDReq) returns (BaseMsgResp)
-    // updateDemoOrderPaid demoOrder information | 更新demoOrder支付状态
+    // Update demoRefund status | 更新退款订单支付状态
     @handler updateDemoRefundPaid
     post /demo-refund/update-paid (PayRefundNotifyReq) returns (BaseMsgResp)
 }

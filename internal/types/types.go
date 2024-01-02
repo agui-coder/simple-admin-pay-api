@@ -291,26 +291,26 @@ type PayRefundNotifyReq struct {
 
 // swagger:model RefundInfo
 type RefundInfo struct {
-	Id                *uint64 `json:"id"`
-	CreatedAt         *int64  `json:"createdAt"`
-	UpdatedAt         *int64  `json:"updatedAt"`
-	Status            *uint32 `json:"status"`
-	No                *string `json:"no"`
-	ChannelCode       *string `json:"channelCode"`
-	OrderId           *uint64 `json:"orderId"`
-	OrderNo           *string `json:"orderNo"`
-	MerchantOrderId   *string `json:"merchantOrderId"`
-	MerchantRefundId  *string `json:"merchantRefundId"`
-	PayPrice          *int32  `json:"payPrice"`
-	RefundPrice       *int32  `json:"refundPrice"`
-	Reason            *string `json:"reason"`
-	UserIp            *string `json:"userIp"`
-	ChannelOrderNo    *string `json:"channelOrderNo"`
-	ChannelRefundNo   *string `json:"channelRefundNo"`
-	SuccessTime       *int64  `json:"successTime"`
-	ChannelErrorCode  *string `json:"channelErrorCode"`
-	ChannelErrorMsg   *string `json:"channelErrorMsg"`
-	ChannelNotifyData *string `json:"channelNotifyData"`
+	Id                *uint64 `json:"id,optional"`
+	CreatedAt         *int64  `json:"createdAt,optional"`
+	UpdatedAt         *int64  `json:"updatedAt,optional"`
+	Status            *uint32 `json:"status,optional"`
+	No                *string `json:"no,optional"`
+	ChannelCode       *string `json:"channelCode,optional"`
+	OrderId           *uint64 `json:"orderId,optional"`
+	OrderNo           *string `json:"orderNo,optional"`
+	MerchantOrderId   *string `json:"merchantOrderId,optional"`
+	MerchantRefundId  *string `json:"merchantRefundId,optional"`
+	PayPrice          *int32  `json:"payPrice,optional"`
+	RefundPrice       *int32  `json:"refundPrice,optional"`
+	Reason            *string `json:"reason,optional"`
+	UserIp            *string `json:"userIp,optional"`
+	ChannelOrderNo    *string `json:"channelOrderNo,optional"`
+	ChannelRefundNo   *string `json:"channelRefundNo,optional"`
+	SuccessTime       *int64  `json:"successTime,optional"`
+	ChannelErrorCode  *string `json:"channelErrorCode,optional"`
+	ChannelErrorMsg   *string `json:"channelErrorMsg,optional"`
+	ChannelNotifyData *string `json:"channelNotifyData,optional"`
 }
 
 // swagger:model RefundPageReq

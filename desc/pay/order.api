@@ -1,5 +1,13 @@
  import "../base.api"
 
+ info(
+     title: "pay api"
+     desc: "pay api"
+     author: "Kevin"
+     email: "894784649@qq.com"
+     version: "v1.0"
+ )
+
 type (
     // The response data of order information | Order信息
     OrderInfo {

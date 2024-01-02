@@ -10,7 +10,7 @@ import (
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
 )
 
-// swagger:route post /pay/order/get order GetOrder
+// swagger:route post /order/get order GetOrder
 //
 // Get order information | 获取Order
 //

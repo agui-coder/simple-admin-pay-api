@@ -113,6 +113,9 @@ func (l *InitDatabaseLogic) insertMenuData() error {
 		},
 		MenuType: pointy.GetPointer(uint32(1)),
 	})
+	if err != nil {
+		return err
+	}
 	_, err = l.svcCtx.CoreRpc.CreateMenu(l.ctx, &core.MenuInfo{
 		Level:     pointy.GetPointer(uint32(2)),
 		ParentId:  pointy.GetPointer(menuData.Id),

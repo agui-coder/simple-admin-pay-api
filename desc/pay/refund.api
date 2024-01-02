@@ -1,35 +1,35 @@
 syntax = "v1"
 
 info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
+    title: "pay api"
+    desc: "pay api"
+    author: "Kevin"
+    email: "894784649@qq.com"
+    version: "v1.0"
 )
 
 type (
     RefundInfo{
-           id *uint64  `json:"id"`
-           createdAt *int64 `json:"createdAt"`
-           updatedAt *int64 `json:"updatedAt"`
-           status *uint32 `json:"status"`
-           no *string `json:"no"`
-           channelCode *string `json:"channelCode"`
-           orderId *uint64 `json:"orderId"`
-           orderNo *string `json:"orderNo"`
-           merchantOrderId *string `json:"merchantOrderId"`
-           merchantRefundId *string `json:"merchantRefundId"`
-           payPrice *int32 `json:"payPrice"`
-           refundPrice *int32 `json:"refundPrice"`
-           reason *string `json:"reason"`
-           userIp *string `json:"userIp"`
-           channelOrderNo *string `json:"channelOrderNo"`
-           channelRefundNo *string `json:"channelRefundNo"`
-           successTime *int64 `json:"successTime"`
-           channelErrorCode *string `json:"channelErrorCode"`
-           channelErrorMsg *string `json:"channelErrorMsg"`
-           channelNotifyData *string `json:"channelNotifyData"`
+           id *uint64  `json:"id,optional"`
+           createdAt *int64 `json:"createdAt,optional"`
+           updatedAt *int64 `json:"updatedAt,optional"`
+           status *uint32 `json:"status,optional"`
+           no *string `json:"no,optional"`
+           channelCode *string `json:"channelCode,optional"`
+           orderId *uint64 `json:"orderId,optional"`
+           orderNo *string `json:"orderNo,optional"`
+           merchantOrderId *string `json:"merchantOrderId,optional"`
+           merchantRefundId *string `json:"merchantRefundId,optional"`
+           payPrice *int32 `json:"payPrice,optional"`
+           refundPrice *int32 `json:"refundPrice,optional"`
+           reason *string `json:"reason,optional"`
+           userIp *string `json:"userIp,optional"`
+           channelOrderNo *string `json:"channelOrderNo,optional"`
+           channelRefundNo *string `json:"channelRefundNo,optional"`
+           successTime *int64 `json:"successTime,optional"`
+           channelErrorCode *string `json:"channelErrorCode,optional"`
+           channelErrorMsg *string `json:"channelErrorMsg,optional"`
+           channelNotifyData *string `json:"channelNotifyData,optional"`
     }
 
     RefundPageReq{

@@ -10,17 +10,17 @@ import (
 	"github.com/agui-coder/simple-admin-pay-api/internal/types"
 )
 
-// swagger:route get /pay/demo-order/get demo GetDemoOrder
+// swagger:route get /demo-order/get/{id} demo GetDemoOrder
 //
-// getDemoOrder demoOrder information | 获得demoOrder
+// Get demoOrder information | 获得示例订单
 //
-// getDemoOrder demoOrder information | 获得demoOrder
+// Get demoOrder information | 获得示例订单
 //
 // Parameters:
 //  + name: body
 //    require: true
 //    in: body
-//    type: IDReq
+//    type: IDAtPathReq
 //
 // Responses:
 //  200: DemoOrderInfo

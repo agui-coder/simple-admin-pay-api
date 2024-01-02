@@ -1,11 +1,11 @@
 syntax = "v1"
 
 info(
-    title: "type title here"
-    desc: "type desc here"
-    author: "type author here"
-    email: "type email here"
-    version: "type version here"
+    title: "pay api"
+    desc: "pay api"
+    author: "Kevin"
+    email: "894784649@qq.com"
+    version: "v1.0"
 )
 
 type (
@@ -22,11 +22,11 @@ type (
 
 service Pay {
 
-    // SubmitPayOrder order information | 支付回调
+    // Notify order information | 支付回调
     @handler notifyOrder
     post /notify/order/:channelCode (notifyRep) returns (string)
 
-    // Update order information | 退款回调
+    // Notify order information | 退款回调
     @handler notifyRefund
     post /notify/refund/:channelCode (notifyRep) returns (string)
 }
