@@ -6,9 +6,9 @@ import (
 	"github.com/agui-coder/simple-admin-pay-api/internal/middleware"
 	"github.com/agui-coder/simple-admin-pay-rpc/payclient"
 	"github.com/casbin/casbin/v2"
+	"github.com/redis/go-redis/v9"
 	"github.com/suyuan32/simple-admin-common/i18n"
 	"github.com/suyuan32/simple-admin-core/rpc/coreclient"
-	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 )
@@ -20,13 +20,13 @@ type ServiceContext struct {
 	Casbin    *casbin.Enforcer
 	PayRpc    payclient.Pay
 	CoreRpc   coreclient.Core
-	Redis     *redis.Redis
+	Redis     redis.UniversalClient
 	Trans     *i18n.Translator
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	rds := redis.MustNewRedis(c.RedisConf)
-	cbn := c.CasbinConf.MustNewCasbinWithRedisWatcher(c.DatabaseConf.Type, c.DatabaseConf.GetDSN(), c.RedisConf)
+	rds := c.RedisConf.MustNewUniversalRedis()
+	cbn := c.CasbinConf.MustNewCasbinWithOriginalRedisWatcher(c.DatabaseConf.Type, c.DatabaseConf.GetDSN(), c.RedisConf)
 	trans := i18n.NewTranslator(i18n2.LocaleFS)
 	return &ServiceContext{
 		Config:    c,

@@ -3,6 +3,7 @@ package middleware
 import (
 	"context"
 	"github.com/agui-coder/simple-admin-pay-api/internal/consts"
+	"github.com/suyuan32/simple-admin-common/config"
 	"github.com/suyuan32/simple-admin-common/enum/errorcode"
 	"github.com/suyuan32/simple-admin-common/utils/jwt"
 	"github.com/zeromicro/go-zero/core/errorx"
@@ -12,17 +13,17 @@ import (
 	"strings"
 
 	"github.com/casbin/casbin/v2"
+	"github.com/redis/go-redis/v9"
 	"github.com/suyuan32/simple-admin-common/i18n"
-	"github.com/zeromicro/go-zero/core/stores/redis"
 )
 
 type AuthorityMiddleware struct {
 	Cbn   *casbin.Enforcer
-	Rds   *redis.Redis
+	Rds   redis.UniversalClient
 	Trans *i18n.Translator
 }
 
-func NewAuthorityMiddleware(cbn *casbin.Enforcer, rds *redis.Redis, trans *i18n.Translator) *AuthorityMiddleware {
+func NewAuthorityMiddleware(cbn *casbin.Enforcer, rds redis.UniversalClient, trans *i18n.Translator) *AuthorityMiddleware {
 	return &AuthorityMiddleware{
 		Cbn:   cbn,
 		Rds:   rds,
@@ -40,7 +41,7 @@ func (m *AuthorityMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
 		roleIds := r.Context().Value(consts.RoleId).(string)
 
 		// check jwt blacklist
-		jwtResult, err := m.Rds.Get("token_" + jwt.StripBearerPrefixFromToken(r.Header.Get("Authorization")))
+		jwtResult, err := m.Rds.Get(context.Background(), config.RedisTokenPrefix+jwt.StripBearerPrefixFromToken(r.Header.Get("Authorization"))).Result()
 		if err != nil {
 			logx.Errorw("redis error in jwt", logx.Field("detail", err.Error()))
 			httpx.Error(w, errorx.NewApiError(http.StatusInternalServerError, err.Error()))
